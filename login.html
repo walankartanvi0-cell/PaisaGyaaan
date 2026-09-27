@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | PaisaGyaan</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* =========================================================
+           LOGIN PAGE
+        ========================================================= */
+
+        .auth-page {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #edf8f1 0,
+                    transparent 35%
+                ),
+                #f8faf8;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 1050px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        /* =========================================================
+           LEFT PANEL
+        ========================================================= */
+
+        .auth-info {
+            padding: 55px;
+            background: linear-gradient(
+                145deg,
+                #eaf6ee,
+                #f7faf6
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 35px;
+        }
+
+        .auth-logo span {
+            color: var(--text);
+        }
+
+        .auth-info h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.1;
+            margin-bottom: 18px;
+        }
+
+        .auth-info > p {
+            color: var(--text-light);
+            line-height: 1.7;
+            max-width: 460px;
+        }
+
+        .benefit-list {
+            margin-top: 30px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .benefit {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .benefit-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .benefit strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .benefit span {
+            color: var(--text-light);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        /* =========================================================
+           RIGHT PANEL
+        ========================================================= */
+
+        .auth-form-panel {
+            padding: 55px;
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-form {
+            width: 100%;
+            max-width: 430px;
+            margin: auto;
+        }
+
+        .auth-form-header {
+            margin-bottom: 30px;
+        }
+
+        .auth-form-header h2 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .auth-form-header p {
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px 45px 14px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42, 111, 73, 0.08);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+            font-size: 0.85rem;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--text-light);
+        }
+
+        .remember input {
+            accent-color: var(--primary);
+        }
+
+        .forgot-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+        }
+
+        /* =========================================================
+           DIVIDER
+        ========================================================= */
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: var(--border);
+        }
+
+        /* =========================================================
+           REGISTER
+        ========================================================= */
+
+        .register-box {
+            text-align: center;
+            padding: 17px;
+            background: #f8faf8;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .register-box a {
+            color: var(--primary);
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .register-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================================================
+           SECURITY NOTE
+        ========================================================= */
+
+        .security-note {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-top: 20px;
+            padding: 13px;
+            background: #fffaf0;
+            border: 1px solid #f0dfb5;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            line-height: 1.5;
+            color: #66552c;
+        }
+
+        /* =========================================================
+           ERROR / SUCCESS
+        ========================================================= */
+
+        .form-message {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 9px;
+            margin-bottom: 18px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .form-message.error {
+            display: block;
+            background: #fff0f0;
+            border: 1px solid #efcaca;
+            color: #8c3030;
+        }
+
+        .form-message.success {
+            display: block;
+            background: #eef8f1;
+            border: 1px solid #c9e4d1;
+            color: #27633d;
+        }
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .auth-wrapper {
+                grid-template-columns: 1fr;
+                max-width: 550px;
+            }
+
+            .auth-info {
+                padding: 40px;
+            }
+
+            .auth-info h1 {
+                font-size: 2rem;
+            }
+
+            .auth-form-panel {
+                padding: 40px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .auth-page {
+                padding: 30px 15px;
+            }
+
+            .auth-info,
+            .auth-form-panel {
+                padding: 30px 22px;
+            }
+
+            .benefit-list {
+                margin-top: 22px;
+            }
+
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <div class="container nav-container">
+
+        <a href="/" class="logo">
+            Paisa<span>Gyaan</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+            <a href="/learn">Learn</a>
+            <a href="/investments">Investments</a>
+            <a href="/loans">Loans</a>
+            <a href="/safety">Safety</a>
+            <a href="/scams">Scams</a>
+            <a href="/community">Community</a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     AUTH PAGE
+========================================================= -->
+
+<main class="auth-page">
+
+    <div class="auth-wrapper">
+
+
+        <!-- =================================================
+             LEFT INFORMATION
+        ================================================== -->
+
+        <section class="auth-info">
+
+            <div class="auth-logo">
+                Paisa<span>Gyaan</span>
+            </div>
+
+
+            <h1>
+                Your money journey,
+                all in one place.
+            </h1>
+
+
+            <p>
+                Log in to access your personalised financial
+                learning journey, tracker, goals and dashboard.
+            </p>
+
+
+            <div class="benefit-list">
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        📊
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Track your money
+                        </strong>
+
+                        <span>
+                            Record income, expenses and investments
+                            in one place.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        🎯
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Set financial goals
+                        </strong>
+
+                        <span>
+                            Create savings goals and keep track
+                            of your progress.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        📚
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Keep learning
+                        </strong>
+
+                        <span>
+                            Explore financial concepts from
+                            beginner to advanced.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        🛡️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Become safer online
+                        </strong>
+
+                        <span>
+                            Learn how to identify common
+                            financial and digital scams.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LOGIN FORM
+        ================================================== -->
+
+        <section class="auth-form-panel">
+
+            <form
+                class="auth-form"
+                id="loginForm"
+                method="POST"
+                action="/login">
+
+
+                <div class="auth-form-header">
+
+                    <h2>
+                        Welcome back 👋
+                    </h2>
+
+                    <p>
+                        Log in to continue your PaisaGyaan journey.
+                    </p>
+
+                </div>
+
+
+                <!-- MESSAGE -->
+
+                <div
+                    id="formMessage"
+                    class="form-message">
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-input"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                        <span class="input-icon">
+                            ✉️
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()"
+                            aria-label="Show password">
+
+                            👁️
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+
+                <div class="form-options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            name="remember"
+                            id="remember"
+                        >
+
+                        Remember me
+
+                    </label>
+
+
+                    <a
+                        href="#"
+                        class="forgot-link"
+                        onclick="forgotPassword(event)">
+
+                        Forgot password?
+
+                    </a>
+
+                </div>
+
+
+                <!-- LOGIN -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary login-btn">
+
+                    Login to PaisaGyaan
+
+                </button>
+
+
+                <div class="divider">
+                    or
+                </div>
+
+
+                <!-- REGISTER -->
+
+                <div class="register-box">
+
+                    Don't have an account?
+
+                    <a href="/register">
+                        Create one
+                    </a>
+
+                </div>
+
+
+                <!-- SECURITY -->
+
+                <div class="security-note">
+
+                    <span>
+                        🔒
+                    </span>
+
+                    <span>
+                        Never share your password, OTP, UPI PIN
+                        or card PIN with anyone — including someone
+                        claiming to be from a bank.
+                    </span>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 PaisaGyaan. Educational project.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* =========================================================
+       PASSWORD VISIBILITY
+    ========================================================= */
+
+    function togglePassword() {
+
+        const password =
+            document.getElementById("password");
+
+        const button =
+            document.querySelector(".password-toggle");
+
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            button.textContent = "🙈";
+
+            button.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
+
+        } else {
+
+            password.type = "password";
+
+            button.textContent = "👁️";
+
+            button.setAttribute(
+                "aria-label",
+                "Show password"
+            );
+
+        }
+    }
+
+
+    /* =========================================================
+       FORGOT PASSWORD
+    ========================================================= */
+
+    function forgotPassword(event) {
+
+        event.preventDefault();
+
+        const message =
+            document.getElementById("formMessage");
+
+
+        message.className =
+            "form-message error";
+
+        message.textContent =
+            "Password recovery will be connected to the backend in the authentication stage.";
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+    /* =========================================================
+       FRONT-END VALIDATION
+    ========================================================= */
+
+    document
+        .getElementById("loginForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                const message =
+                    document
+                        .getElementById("formMessage");
+
+
+                message.className =
+                    "form-message";
+
+
+                if (!email || !password) {
+
+                    event.preventDefault();
+
+                    message.className =
+                        "form-message error";
+
+                    message.textContent =
+                        "Please enter both your email and password.";
+
+                    return;
+                }
+
+
+                if (!email.includes("@")) {
+
+                    event.preventDefault();
+
+                    message.className =
+                        "form-message error";
+
+                    message.textContent =
+                        "Please enter a valid email address.";
+
+                    return;
+                }
+
+                /*
+                 * If validation succeeds, the form is allowed
+                 * to POST to Flask's /login route.
+                 */
+            }
+        );
+
+</script>
+
+</body>
+</html>

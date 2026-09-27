@@ -1,0 +1,2665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="PaisaGyaan loan awareness - understand EMI, interest, loan types, credit cards, BNPL, debt traps and responsible borrowing."
+    >
+
+    <title>Loans & Credit | PaisaGyaan</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        /* =====================================================
+           LOANS PAGE
+           ===================================================== */
+
+        .loan-hero {
+            padding: 75px 0 65px;
+
+            background:
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(242, 184, 75, 0.20),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 10% 80%,
+                    rgba(47, 125, 87, 0.11),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #e8f5ed,
+                    #fafbf8
+                );
+        }
+
+        .loan-hero-grid {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .loan-hero h1 {
+            max-width: 800px;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            line-height: 1.02;
+            letter-spacing: -2px;
+            margin: 18px 0;
+        }
+
+        .loan-hero h1 span {
+            color: var(--primary);
+        }
+
+        .loan-hero p {
+            max-width: 700px;
+            color: var(--text-light);
+            font-size: 1.08rem;
+            line-height: 1.8;
+        }
+
+        .loan-warning-card {
+            padding: 28px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .loan-warning-card h3 {
+            margin-bottom: 16px;
+        }
+
+        .warning-point {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .warning-point:last-child {
+            border-bottom: none;
+        }
+
+        .warning-icon {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        .warning-point strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .warning-point span {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+
+        /* Navigation */
+
+        .loan-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 45px;
+        }
+
+        .loan-nav a {
+            padding: 9px 14px;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            background: white;
+            color: var(--text-light);
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .loan-nav a:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+
+        /* Sections */
+
+        .loan-section {
+            margin-bottom: 75px;
+            scroll-margin-top: 100px;
+        }
+
+        .loan-heading {
+            display: flex;
+            gap: 17px;
+            align-items: flex-start;
+            margin-bottom: 27px;
+        }
+
+        .loan-number {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background: var(--primary);
+            color: white;
+            font-weight: 800;
+        }
+
+        .loan-heading h2 {
+            font-size: 2rem;
+            margin-bottom: 6px;
+            line-height: 1.15;
+        }
+
+        .loan-heading p {
+            color: var(--text-light);
+        }
+
+
+        /* Cards */
+
+        .loan-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 17px;
+        }
+
+        .loan-card {
+            padding: 24px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .loan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .loan-icon {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 15px;
+            border-radius: 13px;
+            background: var(--primary-light);
+            font-size: 1.3rem;
+        }
+
+        .loan-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .loan-card p {
+            color: var(--text-light);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+
+        /* EMI calculator */
+
+        .emi-calculator {
+            padding: 32px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #eaf6ef,
+                    #fff9eb
+                );
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .calculator-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 22px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 0.82rem;
+            font-weight: 750;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            font: inherit;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--primary);
+        }
+
+        .emi-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 13px;
+            margin-top: 25px;
+        }
+
+        .emi-result {
+            padding: 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .emi-result span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-bottom: 6px;
+        }
+
+        .emi-result strong {
+            font-size: 1.25rem;
+        }
+
+
+        /* Loan comparison */
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+        }
+
+        .loan-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+        }
+
+        .loan-table th,
+        .loan-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .loan-table th {
+            background: var(--surface-soft);
+            font-size: 0.83rem;
+        }
+
+        .loan-table td {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .loan-table tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* Formula */
+
+        .formula-box {
+            margin-top: 20px;
+            padding: 24px;
+            background: var(--surface-soft);
+            border: 1px dashed var(--primary);
+            border-radius: var(--radius-md);
+        }
+
+        .formula {
+            display: block;
+            margin: 12px 0;
+            padding: 16px;
+            background: white;
+            border-radius: 10px;
+            font-family: monospace;
+            color: var(--primary-dark);
+            overflow-x: auto;
+        }
+
+
+        /* Debt trap */
+
+        .debt-trap {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 17px;
+        }
+
+        .debt-step {
+            position: relative;
+            padding: 25px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .debt-step-number {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 14px;
+            background: var(--danger-light);
+            color: var(--danger);
+            border-radius: 50%;
+            font-weight: 800;
+        }
+
+        .debt-step p {
+            color: var(--text-light);
+            font-size: 0.87rem;
+        }
+
+
+        /* Checklist */
+
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 13px;
+        }
+
+        .check-item {
+            display: flex;
+            gap: 12px;
+            padding: 18px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .check-icon {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+
+        /* Credit card */
+
+        .credit-card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 17px;
+        }
+
+        .credit-info {
+            padding: 25px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .credit-info h3 {
+            margin-bottom: 10px;
+        }
+
+        .credit-info p {
+            color: var(--text-light);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+
+        /* Quiz */
+
+        .loan-quiz {
+            padding: 34px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf7f1,
+                    #fff8e8
+                );
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .quiz-feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 17px;
+            background: white;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .loan-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .loan-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .calculator-inputs,
+            .emi-results {
+                grid-template-columns: 1fr;
+            }
+
+            .debt-trap {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .loan-grid,
+            .checklist,
+            .credit-card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .loan-hero h1 {
+                letter-spacing: -1px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="/" class="logo">
+
+            <span class="logo-mark">
+                ₹
+            </span>
+
+            <span>
+                Paisa<span>Gyaan</span>
+            </span>
+
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/learn">
+                Learn
+            </a>
+
+            <a href="/investments">
+                Investments
+            </a>
+
+            <a
+                href="/loans"
+                class="active"
+            >
+                Loans
+            </a>
+
+            <a href="/safety">
+                Safety
+            </a>
+
+            <a href="/scams">
+                Scams
+            </a>
+
+            <a href="/community">
+                Community
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="/login"
+                class="btn btn-outline"
+            >
+                Login
+            </a>
+
+            <a
+                href="/register"
+                class="btn btn-primary"
+            >
+                Get Started
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
+<section class="loan-hero">
+
+    <div class="container">
+
+        <div class="loan-hero-grid">
+
+
+            <div>
+
+                <div class="hero-badge">
+                    💳 Borrowing Awareness
+                </div>
+
+
+                <h1>
+
+                    A loan is not
+                    <span>
+                        free money.
+                    </span>
+
+                </h1>
+
+
+                <p>
+
+                    A loan gives you access to money today in
+                    exchange for an obligation to repay it according
+                    to agreed terms. Understand the interest,
+                    fees, tenure, EMI and total cost before you
+                    borrow.
+
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#basics"
+                        class="btn btn-primary"
+                    >
+                        Learn About Loans
+                    </a>
+
+                    <a
+                        href="#calculator"
+                        class="btn btn-secondary"
+                    >
+                        Calculate EMI
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="loan-warning-card">
+
+                <h3>
+                    Before taking a loan
+                </h3>
+
+
+                <div class="warning-point">
+
+                    <div class="warning-icon">
+                        🎯
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Ask why
+                        </strong>
+
+                        <span>
+                            Is borrowing necessary for the goal?
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="warning-point">
+
+                    <div class="warning-icon">
+                        🧮
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Calculate the total cost
+                        </strong>
+
+                        <span>
+                            Don't look only at the EMI.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="warning-point">
+
+                    <div class="warning-icon">
+                        📄
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Read the terms
+                        </strong>
+
+                        <span>
+                            Fees, interest, penalties and conditions matter.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="warning-point">
+
+                    <div class="warning-icon">
+                        🛡️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Verify the lender
+                        </strong>
+
+                        <span>
+                            Be careful with unknown digital lenders.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CONTENT
+     ===================================================== -->
+
+<section class="section">
+
+<div class="container">
+
+
+<!-- =====================================================
+     NAVIGATION
+     ===================================================== -->
+
+<div class="loan-nav">
+
+    <a href="#basics">
+        Basics
+    </a>
+
+    <a href="#emi">
+        EMI
+    </a>
+
+    <a href="#interest">
+        Interest
+    </a>
+
+    <a href="#types">
+        Loan Types
+    </a>
+
+    <a href="#credit-card">
+        Credit Cards
+    </a>
+
+    <a href="#bnpl">
+        BNPL
+    </a>
+
+    <a href="#digital-lending">
+        Digital Lending
+    </a>
+
+    <a href="#debt-trap">
+        Debt Trap
+    </a>
+
+    <a href="#calculator">
+        EMI Calculator
+    </a>
+
+    <a href="#checklist">
+        Checklist
+    </a>
+
+</div>
+
+
+
+<!-- =====================================================
+     01 BASICS
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="basics"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            01
+        </div>
+
+        <div>
+
+            <h2>
+                Loan Basics
+            </h2>
+
+            <p>
+                Let's decode the vocabulary lenders use.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="loan-grid">
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                💰
+            </div>
+
+            <h3>
+                Principal
+            </h3>
+
+            <p>
+                The original amount of money borrowed,
+                before considering interest and other charges.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                📈
+            </div>
+
+            <h3>
+                Interest
+            </h3>
+
+            <p>
+                The cost charged for borrowing money, generally
+                expressed using a rate and subject to the loan's
+                terms.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                📆
+            </div>
+
+            <h3>
+                Tenure
+            </h3>
+
+            <p>
+                The period over which the loan is scheduled to
+                be repaid.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                🧮
+            </div>
+
+            <h3>
+                EMI
+            </h3>
+
+            <p>
+                Equated Monthly Instalment is a periodic payment
+                used for many loans. Its composition between
+                principal and interest can change over time.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                🧾
+            </div>
+
+            <h3>
+                Processing Fee
+            </h3>
+
+            <p>
+                A fee that may be charged for processing a loan.
+                The amount and conditions depend on the lender
+                and product.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                ⚠️
+            </div>
+
+            <h3>
+                Penalty / Charges
+            </h3>
+
+            <p>
+                Late-payment, prepayment, foreclosure or other
+                charges may apply depending on the product and
+                applicable terms.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     02 EMI
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="emi"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            02
+        </div>
+
+        <div>
+
+            <h2>
+                Understanding EMI
+            </h2>
+
+            <p>
+                EMI is a payment amount, not the full cost of a loan.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="loan-grid">
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                🧩
+            </div>
+
+            <h3>
+                Principal Component
+            </h3>
+
+            <p>
+                Part of the payment reduces the outstanding
+                principal, according to the loan's repayment
+                schedule.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                💸
+            </div>
+
+            <h3>
+                Interest Component
+            </h3>
+
+            <p>
+                Part of the payment goes toward the interest
+                charged according to the applicable calculation.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                ⏳
+            </div>
+
+            <h3>
+                Longer Tenure
+            </h3>
+
+            <p>
+                A longer tenure can reduce the periodic payment
+                in some loan structures but may increase the
+                total interest paid.
+            </p>
+
+        </article>
+
+
+    </div>
+
+
+    <div class="formula-box">
+
+        <strong>
+            Standard reducing-balance EMI formula:
+        </strong>
+
+
+        <span class="formula">
+
+            EMI = P × r × (1+r)ⁿ ÷ ((1+r)ⁿ − 1)
+
+        </span>
+
+
+        <p>
+            P = principal, r = periodic interest rate,
+            n = number of payment periods. Actual loan
+            calculations depend on the lender's methodology
+            and terms.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     03 INTEREST
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="interest"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            03
+        </div>
+
+        <div>
+
+            <h2>
+                Interest & Loan Cost
+            </h2>
+
+            <p>
+                The headline interest rate is only one part of
+                understanding borrowing cost.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="loan-grid">
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                📉
+            </div>
+
+            <h3>
+                Fixed Rate
+            </h3>
+
+            <p>
+                An interest rate that remains fixed according to
+                the applicable loan terms for the relevant period.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                🔄
+            </div>
+
+            <h3>
+                Floating Rate
+            </h3>
+
+            <p>
+                An interest rate that can change based on the
+                relevant benchmark, spread and applicable terms.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                🧾
+            </div>
+
+            <h3>
+                Additional Charges
+            </h3>
+
+            <p>
+                Processing fees, documentation fees, insurance
+                charges, late-payment charges or other applicable
+                costs can affect the total cost.
+            </p>
+
+        </article>
+
+
+    </div>
+
+
+    <div class="alert alert-warning">
+
+        <div class="alert-icon">
+            ⚠️
+        </div>
+
+        <div>
+
+            <strong>
+                Don't compare loans only by EMI.
+            </strong>
+
+            <p>
+                A lower EMI can result from a longer repayment
+                period. Compare the interest rate, tenure,
+                total repayment, fees and other applicable charges.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     04 TYPES
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="types"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            04
+        </div>
+
+        <div>
+
+            <h2>
+                Common Types of Loans
+            </h2>
+
+            <p>
+                Different loans are designed for different purposes.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table class="loan-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Loan
+                    </th>
+
+                    <th>
+                        Typical Purpose
+                    </th>
+
+                    <th>
+                        Secured?
+                    </th>
+
+                    <th>
+                        Important Things to Understand
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        Home Loan
+                    </td>
+
+                    <td>
+                        Purchase / construction of eligible property
+                    </td>
+
+                    <td>
+                        Usually secured
+                    </td>
+
+                    <td>
+                        Interest rate, tenure, property-related
+                        conditions and total repayment.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Education Loan
+                    </td>
+
+                    <td>
+                        Eligible education expenses
+                    </td>
+
+                    <td>
+                        Depends on product and amount
+                    </td>
+
+                    <td>
+                        Eligibility, moratorium, interest,
+                        repayment terms and applicable benefits.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Vehicle Loan
+                    </td>
+
+                    <td>
+                        Purchase of eligible vehicle
+                    </td>
+
+                    <td>
+                        Usually secured against the vehicle
+                    </td>
+
+                    <td>
+                        Interest, tenure, down payment and
+                        repayment obligations.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Personal Loan
+                    </td>
+
+                    <td>
+                        General eligible personal purposes
+                    </td>
+
+                    <td>
+                        Usually unsecured
+                    </td>
+
+                    <td>
+                        Interest rate, fees, eligibility,
+                        credit profile and repayment cost.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Gold Loan
+                    </td>
+
+                    <td>
+                        Borrowing against eligible gold collateral
+                    </td>
+
+                    <td>
+                        Secured
+                    </td>
+
+                    <td>
+                        Interest, valuation, repayment and
+                        consequences of default.
+                    </td>
+
+                </tr>
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     05 CREDIT CARDS
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="credit-card"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            05
+        </div>
+
+        <div>
+
+            <h2>
+                Credit Cards
+            </h2>
+
+            <p>
+                A credit card is a credit facility — not extra income.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="credit-card-grid">
+
+
+        <article class="credit-info">
+
+            <h3>
+                💳 Credit Limit
+            </h3>
+
+            <p>
+                The maximum amount of credit available under
+                the card's terms. Your available credit changes
+                as transactions and payments occur.
+            </p>
+
+        </article>
+
+
+        <article class="credit-info">
+
+            <h3>
+                📅 Billing Cycle
+            </h3>
+
+            <p>
+                Transactions during a billing period are included
+                in the statement according to the card issuer's
+                schedule.
+            </p>
+
+        </article>
+
+
+        <article class="credit-info">
+
+            <h3>
+                🧾 Statement
+            </h3>
+
+            <p>
+                The statement shows transactions, amount due,
+                minimum amount due and payment information
+                according to the card's terms.
+            </p>
+
+        </article>
+
+
+        <article class="credit-info">
+
+            <h3>
+                ⚠️ Minimum Due
+            </h3>
+
+            <p>
+                Paying only the minimum amount may leave an
+                outstanding balance that can attract applicable
+                interest and charges.
+            </p>
+
+        </article>
+
+
+        <article class="credit-info">
+
+            <h3>
+                🎁 Rewards
+            </h3>
+
+            <p>
+                Cashback, reward points and other benefits can
+                have conditions, exclusions, limits or expiry rules.
+            </p>
+
+        </article>
+
+
+        <article class="credit-info">
+
+            <h3>
+                🔐 Responsible Use
+            </h3>
+
+            <p>
+                Keep spending within what you can repay and
+                understand the card's interest and fee structure.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     06 BNPL
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="bnpl"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            06
+        </div>
+
+        <div>
+
+            <h2>
+                Buy Now, Pay Later
+            </h2>
+
+            <p>
+                Splitting a purchase into payments does not make
+                the purchase financially free.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="loan-grid">
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                🛒
+            </div>
+
+            <h3>
+                What it means
+            </h3>
+
+            <p>
+                BNPL products can allow eligible consumers to
+                pay later or split purchases according to the
+                product's terms.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                🔍
+            </div>
+
+            <h3>
+                Check the Cost
+            </h3>
+
+            <p>
+                Look for interest, processing charges, late
+                fees and other applicable costs.
+            </p>
+
+        </article>
+
+
+        <article class="loan-card">
+
+            <div class="loan-icon">
+                🧠
+            </div>
+
+            <h3>
+                Watch the Habit
+            </h3>
+
+            <p>
+                Multiple small instalments can accumulate into
+                a significant monthly repayment obligation.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     07 DIGITAL LENDING
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="digital-lending"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            07
+        </div>
+
+        <div>
+
+            <h2>
+                Digital Lending Safety
+            </h2>
+
+            <p>
+                Fast approval does not mean you should skip verification.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="checklist">
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Verify the lender
+                </strong>
+
+                <p>
+                    Check whether the lender and lending arrangement
+                    are legitimate and appropriately regulated.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Read the Key Facts
+                </strong>
+
+                <p>
+                    Understand the applicable interest rate,
+                    charges and repayment obligations.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Check app permissions
+                </strong>
+
+                <p>
+                    Be cautious about applications requesting
+                    unnecessary access to personal information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Don't pay random “release fees”
+                </strong>
+
+                <p>
+                    Unexpected demands for payments through
+                    personal accounts or suspicious links are
+                    a major warning sign.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Protect your documents
+                </strong>
+
+                <p>
+                    Don't casually share Aadhaar, PAN, OTP,
+                    banking credentials or other sensitive
+                    information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Keep repayment records
+                </strong>
+
+                <p>
+                    Maintain statements, receipts and communication
+                    relating to your loan.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     08 DEBT TRAP
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="debt-trap"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            08
+        </div>
+
+        <div>
+
+            <h2>
+                How a Debt Trap Can Develop
+            </h2>
+
+            <p>
+                Debt becomes dangerous when new borrowing repeatedly
+                becomes necessary to manage old obligations.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="debt-trap">
+
+
+        <article class="debt-step">
+
+            <div class="debt-step-number">
+                1
+            </div>
+
+            <h3>
+                Unplanned borrowing
+            </h3>
+
+            <p>
+                A person borrows without fully understanding
+                the repayment cost or affordability.
+            </p>
+
+        </article>
+
+
+        <article class="debt-step">
+
+            <div class="debt-step-number">
+                2
+            </div>
+
+            <h3>
+                Repayment pressure
+            </h3>
+
+            <p>
+                EMIs, card balances and other obligations begin
+                consuming a larger portion of available cash flow.
+            </p>
+
+        </article>
+
+
+        <article class="debt-step">
+
+            <div class="debt-step-number">
+                3
+            </div>
+
+            <h3>
+                New borrowing
+            </h3>
+
+            <p>
+                Another loan or credit facility is used to meet
+                previous obligations.
+            </p>
+
+        </article>
+
+
+    </div>
+
+
+    <div class="alert alert-danger">
+
+        <div class="alert-icon">
+            🛑
+        </div>
+
+        <div>
+
+            <strong>
+                Warning sign
+            </strong>
+
+            <p>
+                If you regularly need new borrowing to pay existing
+                debt, pause and review your entire debt situation
+                rather than treating each new loan as an isolated decision.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     09 EMI CALCULATOR
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="calculator"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            09
+        </div>
+
+        <div>
+
+            <h2>
+                EMI Calculator
+            </h2>
+
+            <p>
+                Calculate an illustrative EMI using the standard
+                reducing-balance formula.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="emi-calculator">
+
+
+        <div class="calculator-inputs">
+
+
+            <div class="input-group">
+
+                <label for="loanAmount">
+                    Loan Amount (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="loanAmount"
+                    value="500000"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="interestRate">
+                    Annual Interest Rate (%)
+                </label>
+
+                <input
+                    type="number"
+                    id="interestRate"
+                    value="10"
+                    min="0"
+                    step="0.1"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="loanYears">
+                    Tenure (Years)
+                </label>
+
+                <input
+                    type="number"
+                    id="loanYears"
+                    value="5"
+                    min="1"
+                    step="1"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <br>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="calculateEMI()"
+        >
+            Calculate EMI
+        </button>
+
+
+        <div class="emi-results">
+
+
+            <div class="emi-result">
+
+                <span>
+                    Monthly EMI
+                </span>
+
+                <strong id="emiValue">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div class="emi-result">
+
+                <span>
+                    Total Interest
+                </span>
+
+                <strong id="interestValue">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div class="emi-result">
+
+                <span>
+                    Total Repayment
+                </span>
+
+                <strong id="repaymentValue">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <p
+            style="
+                margin-top:18px;
+                color:var(--text-muted);
+                font-size:0.78rem;
+            "
+        >
+            This is an illustrative calculation. Actual loan
+            repayment may differ because of lender-specific
+            calculation methods, fees, rate changes and other terms.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     10 BORROWING CHECKLIST
+     ===================================================== -->
+
+<section
+    class="loan-section"
+    id="checklist"
+>
+
+    <div class="loan-heading">
+
+        <div class="loan-number">
+            10
+        </div>
+
+        <div>
+
+            <h2>
+                Before You Borrow: Checklist
+            </h2>
+
+            <p>
+                Run through these questions before signing up.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="checklist">
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Do I actually need the loan?
+                </strong>
+
+                <p>
+                    Separate a genuine financial need from an
+                    impulse purchase.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Can I comfortably repay it?
+                </strong>
+
+                <p>
+                    Consider existing EMIs and regular expenses,
+                    not just today's income.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    What is the total repayment?
+                </strong>
+
+                <p>
+                    Calculate the full amount payable over the
+                    complete tenure.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    What are the additional charges?
+                </strong>
+
+                <p>
+                    Check processing, late payment, prepayment
+                    and other applicable fees.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    What happens if I miss a payment?
+                </strong>
+
+                <p>
+                    Understand consequences before agreeing
+                    to the loan.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <div class="check-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Have I read the agreement?
+                </strong>
+
+                <p>
+                    Don't accept a financial contract without
+                    understanding its important terms.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUIZ
+     ===================================================== -->
+
+<section class="loan-section">
+
+    <div class="loan-quiz">
+
+        <span class="section-label">
+            Loan Knowledge Check
+        </span>
+
+
+        <h2>
+            🧠 Which statement is most accurate?
+        </h2>
+
+
+        <p>
+            Choose the answer you think is correct.
+        </p>
+
+
+        <button
+            class="quiz-option"
+            onclick="loanAnswer(false)"
+        >
+            A. A longer tenure always makes a loan cheaper.
+        </button>
+
+
+        <button
+            class="quiz-option"
+            onclick="loanAnswer(true)"
+        >
+            B. A longer tenure can lower the EMI but may increase
+            total interest paid.
+        </button>
+
+
+        <button
+            class="quiz-option"
+            onclick="loanAnswer(false)"
+        >
+            C. EMI tells you the complete cost of the loan.
+        </button>
+
+
+        <button
+            class="quiz-option"
+            onclick="loanAnswer(false)"
+        >
+            D. Credit cards are not loans because they are cards.
+        </button>
+
+
+        <div
+            class="quiz-feedback"
+            id="loanFeedback"
+        ></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DISCLAIMER
+     ===================================================== -->
+
+<div class="alert alert-success">
+
+    <div class="alert-icon">
+        ℹ️
+    </div>
+
+    <div>
+
+        <strong>
+            PaisaGyaan is an awareness platform.
+        </strong>
+
+        <p>
+            This page provides general financial education and
+            illustrative calculations. Loan terms, interest rates,
+            fees and regulatory requirements vary by lender and
+            product. Always read the applicable agreement and
+            verify current information before borrowing.
+        </p>
+
+    </div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+
+            <div class="footer-brand">
+
+                <h2>
+                    PaisaGyaan 💰
+                </h2>
+
+                <p>
+                    Learn money. Understand money.
+                    Protect money. Make informed decisions.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Learn
+                </h4>
+
+                <a href="/learn">
+                    Financial Basics
+                </a>
+
+                <a href="/investments">
+                    Investments
+                </a>
+
+                <a href="/loans">
+                    Loans
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Protect
+                </h4>
+
+                <a href="/safety">
+                    Safety
+                </a>
+
+                <a href="/scams">
+                    Scam Awareness
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Community
+                </h4>
+
+                <a href="/community">
+                    Discussions
+                </a>
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 PaisaGyaan · Financial Awareness & Education
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+    /* =====================================================
+       EMI CALCULATOR
+       ===================================================== */
+
+    function calculateEMI() {
+
+        const principal =
+            Number(
+                document.getElementById(
+                    "loanAmount"
+                ).value
+            );
+
+        const annualRate =
+            Number(
+                document.getElementById(
+                    "interestRate"
+                ).value
+            );
+
+        const years =
+            Number(
+                document.getElementById(
+                    "loanYears"
+                ).value
+            );
+
+
+        if (
+            principal <= 0 ||
+            annualRate < 0 ||
+            years <= 0
+        ) {
+
+            alert(
+                "Please enter valid loan details."
+            );
+
+            return;
+
+        }
+
+
+        const months =
+            years * 12;
+
+
+        const monthlyRate =
+            annualRate / 100 / 12;
+
+
+        let emi;
+
+
+        if (
+            monthlyRate === 0
+        ) {
+
+            emi =
+                principal / months;
+
+        } else {
+
+            emi =
+                principal *
+                monthlyRate *
+                Math.pow(
+                    1 + monthlyRate,
+                    months
+                ) /
+                (
+                    Math.pow(
+                        1 + monthlyRate,
+                        months
+                    ) - 1
+                );
+
+        }
+
+
+        const totalPayment =
+            emi * months;
+
+
+        const totalInterest =
+            totalPayment - principal;
+
+
+        document.getElementById(
+            "emiValue"
+        ).textContent =
+            formatMoney(emi);
+
+
+        document.getElementById(
+            "interestValue"
+        ).textContent =
+            formatMoney(totalInterest);
+
+
+        document.getElementById(
+            "repaymentValue"
+        ).textContent =
+            formatMoney(totalPayment);
+
+    }
+
+
+    function formatMoney(number) {
+
+        return "₹" +
+            Math.round(number).toLocaleString(
+                "en-IN"
+            );
+
+    }
+
+
+    calculateEMI();
+
+
+
+    /* =====================================================
+       QUIZ
+       ===================================================== */
+
+    function loanAnswer(isCorrect) {
+
+        const feedback =
+            document.getElementById(
+                "loanFeedback"
+            );
+
+
+        feedback.style.display =
+            "block";
+
+
+        if (isCorrect) {
+
+            feedback.innerHTML =
+                "✅ Correct! A longer tenure can reduce the periodic EMI but may increase the total interest paid over the life of the loan.";
+
+        } else {
+
+            feedback.innerHTML =
+                "❌ Not quite. EMI is only one part of the picture. Consider tenure, interest and the total amount payable.";
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       SCROLL REVEAL
+       ===================================================== */
+
+    const cards =
+        document.querySelectorAll(
+            ".loan-card, .debt-step, .check-item, .credit-info"
+        );
+
+
+    const observer =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach(
+                    (entry) => {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            entry.target.style.opacity =
+                                "1";
+
+                            entry.target.style.transform =
+                                "translateY(0)";
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+            {
+                threshold: 0.08
+            }
+        );
+
+
+    cards.forEach(
+        (card) => {
+
+            card.style.opacity =
+                "0";
+
+            card.style.transform =
+                "translateY(18px)";
+
+            card.style.transition =
+                "opacity 0.55s ease, transform 0.55s ease";
+
+            observer.observe(card);
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

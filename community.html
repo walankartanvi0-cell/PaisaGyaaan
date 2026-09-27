@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Community | PaisaGyaan</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* =========================================================
+           COMMUNITY PAGE
+        ========================================================= */
+
+        .community-hero-text {
+            max-width: 800px;
+        }
+
+        .community-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .community-nav a {
+            text-decoration: none;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: white;
+            color: var(--text);
+            transition: 0.2s ease;
+        }
+
+        .community-nav a:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* =========================================================
+           LAYOUT
+        ========================================================= */
+
+        .community-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .community-main {
+            min-width: 0;
+        }
+
+        .community-sidebar {
+            position: sticky;
+            top: 90px;
+        }
+
+        /* =========================================================
+           COMPOSER
+        ========================================================= */
+
+        .composer {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 25px;
+        }
+
+        .composer-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #eaf5ee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .composer textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .composer textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .composer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .category-select {
+            padding: 11px 13px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: white;
+            font-family: inherit;
+        }
+
+        /* =========================================================
+           SEARCH
+        ========================================================= */
+
+        .community-tools {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .community-search {
+            flex: 1;
+            min-width: 220px;
+            padding: 13px 15px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        .filter-btn {
+            padding: 11px 15px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s ease;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* =========================================================
+           POSTS
+        ========================================================= */
+
+        .post {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: 0.2s ease;
+        }
+
+        .post:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .post-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-user-info strong {
+            display: block;
+        }
+
+        .post-meta {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            margin-top: 3px;
+        }
+
+        .post-category {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #eef7f1;
+            color: var(--primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .post h3 {
+            margin: 20px 0 10px;
+        }
+
+        .post-content {
+            line-height: 1.7;
+            color: var(--text-light);
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .post-action {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: var(--text-light);
+            font-family: inherit;
+        }
+
+        .post-action:hover,
+        .post-action.liked {
+            background: #edf7f1;
+            color: var(--primary);
+        }
+
+        /* =========================================================
+           REPLIES
+        ========================================================= */
+
+        .reply-box {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .reply-input {
+            width: 100%;
+            min-height: 75px;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .reply-submit {
+            margin-top: 10px;
+        }
+
+        .existing-replies {
+            margin-top: 15px;
+        }
+
+        .reply {
+            background: #f8faf8;
+            border-radius: 12px;
+            padding: 13px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* =========================================================
+           SIDEBAR
+        ========================================================= */
+
+        .sidebar-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-card h3 {
+            margin-top: 0;
+        }
+
+        .topic-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .topic-list li {
+            margin-bottom: 9px;
+        }
+
+        .topic-list button {
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text);
+            font-family: inherit;
+        }
+
+        .topic-list button:hover {
+            background: #eef7f1;
+            color: var(--primary);
+        }
+
+        .community-rule {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .community-rule:last-child {
+            border-bottom: none;
+        }
+
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal {
+            width: min(600px, 100%);
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 18px;
+            top: 15px;
+            border: none;
+            background: transparent;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal textarea {
+            width: 100%;
+            min-height: 130px;
+            margin: 15px 0;
+            box-sizing: border-box;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        @media (max-width: 900px) {
+
+            .community-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .community-sidebar {
+                position: static;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .post-header {
+                flex-direction: column;
+            }
+
+            .composer-bottom {
+                align-items: stretch;
+            }
+
+            .category-select,
+            .composer-bottom .btn {
+                width: 100%;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <div class="container nav-container">
+
+        <a href="/" class="logo">
+            Paisa<span>Gyaan</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+            <a href="/learn">Learn</a>
+            <a href="/investments">Investments</a>
+            <a href="/loans">Loans</a>
+            <a href="/safety">Safety</a>
+            <a href="/scams">Scams</a>
+            <a href="/community" class="active">Community</a>
+            <a href="/login">Login</a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<header class="page-hero">
+
+    <div class="container">
+
+        <span class="eyebrow">PAISAGYAAN COMMUNITY</span>
+
+        <h1>
+            Learn money together.
+        </h1>
+
+        <p class="community-hero-text">
+            Ask questions, share what you've learned, discuss
+            everyday money topics and help build a financially
+            aware community.
+        </p>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- =========================================================
+     COMMUNITY NAV
+========================================================= -->
+
+<div class="community-nav">
+
+    <a href="#feed">Community Feed</a>
+    <a href="#ask">Ask a Question</a>
+    <a href="#topics">Topics</a>
+    <a href="#rules">Community Rules</a>
+
+</div>
+
+
+<!-- =========================================================
+     IMPORTANT DISCLAIMER
+========================================================= -->
+
+<div class="alert">
+
+    <strong>💡 Keep it educational.</strong>
+
+    <p>
+        PaisaGyaan is a financial-literacy community.
+        Share experiences and educational information, but don't
+        present personal investment recommendations as guaranteed
+        advice. Always verify important financial information
+        independently.
+    </p>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN LAYOUT
+========================================================= -->
+
+<div class="community-layout" id="feed">
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <section class="community-main">
+
+
+        <!-- COMPOSER -->
+
+        <div class="composer" id="ask">
+
+            <div class="composer-header">
+
+                <div class="avatar">
+                    PG
+                </div>
+
+                <div>
+                    <strong>Start a discussion</strong>
+
+                    <div class="post-meta">
+                        Ask, share or explain something you've learned.
+                    </div>
+                </div>
+
+            </div>
+
+
+            <textarea
+                id="postInput"
+                placeholder="Example: What is the difference between saving and investing?"
+            ></textarea>
+
+
+            <div class="composer-bottom">
+
+                <select
+                    id="postCategory"
+                    class="category-select">
+
+                    <option value="General">General</option>
+                    <option value="Saving">Saving</option>
+                    <option value="Budgeting">Budgeting</option>
+                    <option value="Investing">Investing</option>
+                    <option value="Loans">Loans</option>
+                    <option value="Banking">Banking</option>
+                    <option value="Scams">Scam Awareness</option>
+                    <option value="Careers">Finance & Careers</option>
+
+                </select>
+
+
+                <button
+                    class="btn btn-primary"
+                    onclick="createPost()">
+
+                    + Post Discussion
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOOLS -->
+
+        <div class="community-tools">
+
+            <input
+                type="text"
+                id="searchPosts"
+                class="community-search"
+                placeholder="🔎 Search discussions..."
+                oninput="searchPosts()"
+            >
+
+
+            <button
+                class="filter-btn active"
+                onclick="filterPosts('All', this)">
+
+                All
+
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="filterPosts('Saving', this)">
+
+                Saving
+
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="filterPosts('Investing', this)">
+
+                Investing
+
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="filterPosts('Loans', this)">
+
+                Loans
+
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="filterPosts('Scams', this)">
+
+                Scams
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             POST 1
+        ================================================== -->
+
+        <article
+            class="post"
+            data-category="Saving"
+            data-search="emergency fund saving money">
+
+            <div class="post-header">
+
+                <div class="post-user">
+
+                    <div class="avatar">
+                        A
+                    </div>
+
+                    <div class="post-user-info">
+
+                        <strong>Aarav</strong>
+
+                        <div class="post-meta">
+                            2 hours ago · Student
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <span class="post-category">
+                    Saving
+                </span>
+
+            </div>
+
+
+            <h3>
+                How much should an emergency fund be?
+            </h3>
+
+
+            <p class="post-content">
+
+                I keep hearing about emergency funds before investing.
+                What expenses should actually be included while
+                estimating one?
+
+            </p>
+
+
+            <div class="post-actions">
+
+                <button
+                    class="post-action"
+                    onclick="likePost(this)">
+
+                    ❤️ <span>12</span>
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="toggleReply(this)">
+
+                    💬 Reply
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="sharePost()">
+
+                    ↗ Share
+
+                </button>
+
+            </div>
+
+
+            <div class="reply-box">
+
+                <textarea
+                    class="reply-input"
+                    placeholder="Write an educational reply..."
+                ></textarea>
+
+                <button
+                    class="btn btn-primary reply-submit"
+                    onclick="addReply(this)">
+
+                    Reply
+
+                </button>
+
+                <div class="existing-replies">
+
+                    <div class="reply">
+
+                        <strong>Meera</strong>
+
+                        <p>
+                            A useful starting point is to think about
+                            essential expenses rather than every
+                            discretionary purchase.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             POST 2
+        ================================================== -->
+
+        <article
+            class="post"
+            data-category="Investing"
+            data-search="mutual fund beginner investment">
+
+            <div class="post-header">
+
+                <div class="post-user">
+
+                    <div class="avatar">
+                        R
+                    </div>
+
+                    <div class="post-user-info">
+
+                        <strong>Riya</strong>
+
+                        <div class="post-meta">
+                            5 hours ago · Beginner
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <span class="post-category">
+                    Investing
+                </span>
+
+            </div>
+
+
+            <h3>
+                SIP vs lump sum — what exactly is the difference?
+            </h3>
+
+
+            <p class="post-content">
+
+                I understand that SIP means investing periodically,
+                but I'm still confused about how it differs from
+                investing one amount at once.
+
+            </p>
+
+
+            <div class="post-actions">
+
+                <button
+                    class="post-action"
+                    onclick="likePost(this)">
+
+                    ❤️ <span>18</span>
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="toggleReply(this)">
+
+                    💬 Reply
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="sharePost()">
+
+                    ↗ Share
+
+                </button>
+
+            </div>
+
+
+            <div class="reply-box">
+
+                <textarea
+                    class="reply-input"
+                    placeholder="Write an educational reply..."
+                ></textarea>
+
+                <button
+                    class="btn btn-primary reply-submit"
+                    onclick="addReply(this)">
+
+                    Reply
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             POST 3
+        ================================================== -->
+
+        <article
+            class="post"
+            data-category="Loans"
+            data-search="loan emi interest rate">
+
+            <div class="post-header">
+
+                <div class="post-user">
+
+                    <div class="avatar">
+                        K
+                    </div>
+
+                    <div class="post-user-info">
+
+                        <strong>Kabir</strong>
+
+                        <div class="post-meta">
+                            Yesterday · Learner
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <span class="post-category">
+                    Loans
+                </span>
+
+            </div>
+
+
+            <h3>
+                Why does a longer loan tenure increase total interest?
+            </h3>
+
+
+            <p class="post-content">
+
+                My EMI calculator showed that increasing the tenure
+                reduced the monthly EMI but increased the overall
+                amount paid. Why does that happen?
+
+            </p>
+
+
+            <div class="post-actions">
+
+                <button
+                    class="post-action"
+                    onclick="likePost(this)">
+
+                    ❤️ <span>9</span>
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="toggleReply(this)">
+
+                    💬 Reply
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="sharePost()">
+
+                    ↗ Share
+
+                </button>
+
+            </div>
+
+
+            <div class="reply-box">
+
+                <textarea
+                    class="reply-input"
+                    placeholder="Write an educational reply..."
+                ></textarea>
+
+                <button
+                    class="btn btn-primary reply-submit"
+                    onclick="addReply(this)">
+
+                    Reply
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             POST 4
+        ================================================== -->
+
+        <article
+            class="post"
+            data-category="Scams"
+            data-search="upi scam collect request fraud">
+
+            <div class="post-header">
+
+                <div class="post-user">
+
+                    <div class="avatar">
+                        N
+                    </div>
+
+                    <div class="post-user-info">
+
+                        <strong>Neha</strong>
+
+                        <div class="post-meta">
+                            Yesterday · Community Member
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <span class="post-category">
+                    Scams
+                </span>
+
+            </div>
+
+
+            <h3>
+                Someone asked me to enter my UPI PIN to receive money.
+            </h3>
+
+
+            <p class="post-content">
+
+                I didn't do it because it felt suspicious. Is there
+                a simple way to remember the difference between
+                sending and receiving money through UPI?
+
+            </p>
+
+
+            <div class="post-actions">
+
+                <button
+                    class="post-action"
+                    onclick="likePost(this)">
+
+                    ❤️ <span>26</span>
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="toggleReply(this)">
+
+                    💬 Reply
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="sharePost()">
+
+                    ↗ Share
+
+                </button>
+
+            </div>
+
+
+            <div class="reply-box">
+
+                <textarea
+                    class="reply-input"
+                    placeholder="Write an educational reply..."
+                ></textarea>
+
+                <button
+                    class="btn btn-primary reply-submit"
+                    onclick="addReply(this)">
+
+                    Reply
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             POST 5
+        ================================================== -->
+
+        <article
+            class="post"
+            data-category="Budgeting"
+            data-search="budget student salary expenses">
+
+            <div class="post-header">
+
+                <div class="post-user">
+
+                    <div class="avatar">
+                        S
+                    </div>
+
+                    <div class="post-user-info">
+
+                        <strong>Sameer</strong>
+
+                        <div class="post-meta">
+                            2 days ago · Student
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <span class="post-category">
+                    Budgeting
+                </span>
+
+            </div>
+
+
+            <h3>
+                What is the easiest way to start tracking expenses?
+            </h3>
+
+
+            <p class="post-content">
+
+                I want to understand where my money goes every month,
+                but maintaining a complicated spreadsheet feels
+                difficult. Any beginner-friendly approach?
+
+            </p>
+
+
+            <div class="post-actions">
+
+                <button
+                    class="post-action"
+                    onclick="likePost(this)">
+
+                    ❤️ <span>15</span>
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="toggleReply(this)">
+
+                    💬 Reply
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="sharePost()">
+
+                    ↗ Share
+
+                </button>
+
+            </div>
+
+
+            <div class="reply-box">
+
+                <textarea
+                    class="reply-input"
+                    placeholder="Write an educational reply..."
+                ></textarea>
+
+                <button
+                    class="btn btn-primary reply-submit"
+                    onclick="addReply(this)">
+
+                    Reply
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+        <!-- EMPTY STATE -->
+
+        <div id="emptyState" class="empty-state">
+
+            <div class="empty-icon">
+                🔎
+            </div>
+
+            <h3>
+                No discussions found
+            </h3>
+
+            <p>
+                Try another search term or category.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="community-sidebar">
+
+
+        <!-- TOPICS -->
+
+        <div class="sidebar-card" id="topics">
+
+            <h3>
+                📚 Explore topics
+            </h3>
+
+            <ul class="topic-list">
+
+                <li>
+                    <button onclick="filterFromSidebar('Saving')">
+                        💰 Saving
+                    </button>
+                </li>
+
+                <li>
+                    <button onclick="filterFromSidebar('Budgeting')">
+                        🧾 Budgeting
+                    </button>
+                </li>
+
+                <li>
+                    <button onclick="filterFromSidebar('Investing')">
+                        📈 Investing
+                    </button>
+                </li>
+
+                <li>
+                    <button onclick="filterFromSidebar('Loans')">
+                        💳 Loans & Credit
+                    </button>
+                </li>
+
+                <li>
+                    <button onclick="filterFromSidebar('Banking')">
+                        🏦 Banking
+                    </button>
+                </li>
+
+                <li>
+                    <button onclick="filterFromSidebar('Scams')">
+                        🛡️ Scam Awareness
+                    </button>
+                </li>
+
+                <li>
+                    <button onclick="filterFromSidebar('Careers')">
+                        💼 Finance & Careers
+                    </button>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- COMMUNITY RULES -->
+
+        <div class="sidebar-card" id="rules">
+
+            <h3>
+                🤝 Community rules
+            </h3>
+
+            <div class="community-rule">
+                Be respectful.
+            </div>
+
+            <div class="community-rule">
+                Ask genuine questions.
+            </div>
+
+            <div class="community-rule">
+                Don't share passwords, OTPs or private financial data.
+            </div>
+
+            <div class="community-rule">
+                Don't promise guaranteed investment returns.
+            </div>
+
+            <div class="community-rule">
+                Don't impersonate banks or financial institutions.
+            </div>
+
+            <div class="community-rule">
+                Verify important information independently.
+            </div>
+
+        </div>
+
+
+        <!-- QUICK LEARNING -->
+
+        <div class="sidebar-card">
+
+            <h3>
+                ⚡ Quick learning
+            </h3>
+
+            <p>
+                Want to understand the topic before joining
+                the discussion?
+            </p>
+
+            <a href="/learn"
+               class="btn btn-primary"
+               style="display:block;text-align:center;">
+
+                Start Learning
+
+            </a>
+
+        </div>
+
+    </aside>
+
+</div>
+
+</main>
+
+
+<!-- =========================================================
+     POST SUCCESS MODAL
+========================================================= -->
+
+<div id="postModal" class="modal-overlay">
+
+    <div class="modal">
+
+        <button
+            class="modal-close"
+            onclick="closeModal()">
+
+            ×
+
+        </button>
+
+        <h2>
+            Discussion posted 🎉
+        </h2>
+
+        <p>
+            Your discussion has been added to the community feed.
+        </p>
+
+        <button
+            class="btn btn-primary"
+            onclick="closeModal()">
+
+            Continue
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div>
+
+                <h3>PaisaGyaan</h3>
+
+                <p>
+                    Financial literacy for everyday decisions.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h4>Explore</h4>
+
+                <a href="/learn">Learn</a>
+                <a href="/investments">Investments</a>
+                <a href="/loans">Loans</a>
+
+            </div>
+
+
+            <div>
+
+                <h4>Community</h4>
+
+                <a href="/safety">Safety</a>
+                <a href="/scams">Scams</a>
+                <a href="/community">Community</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 PaisaGyaan. Educational project.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    let currentFilter = "All";
+
+
+    /* =========================================================
+       CREATE POST
+    ========================================================= */
+
+    function createPost() {
+
+        const input =
+            document.getElementById("postInput");
+
+        const category =
+            document.getElementById("postCategory").value;
+
+        const content =
+            input.value.trim();
+
+
+        if (!content) {
+
+            alert("Please write something before posting.");
+
+            input.focus();
+
+            return;
+        }
+
+
+        const post =
+            document.createElement("article");
+
+        post.className = "post";
+
+        post.dataset.category = category;
+
+        post.dataset.search =
+            content.toLowerCase();
+
+
+        post.innerHTML = `
+
+            <div class="post-header">
+
+                <div class="post-user">
+
+                    <div class="avatar">
+                        Y
+                    </div>
+
+                    <div class="post-user-info">
+
+                        <strong>You</strong>
+
+                        <div class="post-meta">
+                            Just now · Community Member
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <span class="post-category">
+                    ${escapeHTML(category)}
+                </span>
+
+            </div>
+
+
+            <h3>
+                Community discussion
+            </h3>
+
+
+            <p class="post-content">
+                ${escapeHTML(content)}
+            </p>
+
+
+            <div class="post-actions">
+
+                <button
+                    class="post-action"
+                    onclick="likePost(this)">
+
+                    ❤️ <span>0</span>
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="toggleReply(this)">
+
+                    💬 Reply
+
+                </button>
+
+
+                <button
+                    class="post-action"
+                    onclick="sharePost()">
+
+                    ↗ Share
+
+                </button>
+
+            </div>
+
+
+            <div class="reply-box">
+
+                <textarea
+                    class="reply-input"
+                    placeholder="Write an educational reply..."
+                ></textarea>
+
+                <button
+                    class="btn btn-primary reply-submit"
+                    onclick="addReply(this)">
+
+                    Reply
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        document
+            .querySelector(".community-main")
+            .insertBefore(
+                post,
+                document.getElementById("emptyState")
+            );
+
+
+        input.value = "";
+
+        document.getElementById("postCategory").value =
+            "General";
+
+
+        closeModal();
+
+        document.getElementById("postModal").style.display =
+            "flex";
+
+
+        applyFilters();
+    }
+
+
+    /* =========================================================
+       LIKE
+    ========================================================= */
+
+    function likePost(button) {
+
+        const count =
+            button.querySelector("span");
+
+        let likes =
+            parseInt(count.textContent) || 0;
+
+
+        if (button.classList.contains("liked")) {
+
+            likes--;
+
+            button.classList.remove("liked");
+
+        } else {
+
+            likes++;
+
+            button.classList.add("liked");
+
+        }
+
+
+        count.textContent = likes;
+    }
+
+
+    /* =========================================================
+       REPLY
+    ========================================================= */
+
+    function toggleReply(button) {
+
+        const post =
+            button.closest(".post");
+
+        const replyBox =
+            post.querySelector(".reply-box");
+
+
+        if (
+            replyBox.style.display === "block"
+        ) {
+
+            replyBox.style.display = "none";
+
+        } else {
+
+            replyBox.style.display = "block";
+
+            const input =
+                replyBox.querySelector(".reply-input");
+
+            if (input) {
+                input.focus();
+            }
+
+        }
+    }
+
+
+    function addReply(button) {
+
+        const replyBox =
+            button.closest(".reply-box");
+
+        const input =
+            replyBox.querySelector(".reply-input");
+
+        const content =
+            input.value.trim();
+
+
+        if (!content) {
+
+            alert("Write a reply first.");
+
+            return;
+        }
+
+
+        let replies =
+            replyBox.querySelector(".existing-replies");
+
+
+        if (!replies) {
+
+            replies =
+                document.createElement("div");
+
+            replies.className =
+                "existing-replies";
+
+            replyBox.appendChild(replies);
+        }
+
+
+        const reply =
+            document.createElement("div");
+
+        reply.className = "reply";
+
+
+        reply.innerHTML = `
+
+            <strong>You</strong>
+
+            <p>
+                ${escapeHTML(content)}
+            </p>
+
+        `;
+
+
+        replies.appendChild(reply);
+
+        input.value = "";
+    }
+
+
+    /* =========================================================
+       FILTER
+    ========================================================= */
+
+    function filterPosts(category, button) {
+
+        currentFilter = category;
+
+
+        document
+            .querySelectorAll(".filter-btn")
+            .forEach(btn => {
+
+                btn.classList.remove("active");
+
+            });
+
+
+        if (button) {
+            button.classList.add("active");
+        }
+
+
+        applyFilters();
+    }
+
+
+    function filterFromSidebar(category) {
+
+        currentFilter = category;
+
+
+        document
+            .querySelectorAll(".filter-btn")
+            .forEach(btn => {
+
+                btn.classList.remove("active");
+
+                if (
+                    btn.textContent.trim()
+                        .toLowerCase()
+                        .includes(category.toLowerCase())
+                ) {
+
+                    btn.classList.add("active");
+
+                }
+
+            });
+
+
+        applyFilters();
+
+
+        document
+            .getElementById("feed")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+    }
+
+
+    /* =========================================================
+       SEARCH
+    ========================================================= */
+
+    function searchPosts() {
+
+        applyFilters();
+    }
+
+
+    function applyFilters() {
+
+        const search =
+            document
+                .getElementById("searchPosts")
+                .value
+                .toLowerCase()
+                .trim();
+
+
+        const posts =
+            document.querySelectorAll(".post");
+
+
+        let visibleCount = 0;
+
+
+        posts.forEach(post => {
+
+            const category =
+                post.dataset.category || "";
+
+
+            const searchable =
+                post.dataset.search ||
+                post.textContent.toLowerCase();
+
+
+            const matchesCategory =
+                currentFilter === "All" ||
+                category === currentFilter;
+
+
+            const matchesSearch =
+                !search ||
+                searchable.toLowerCase().includes(search);
+
+
+            if (
+                matchesCategory &&
+                matchesSearch
+            ) {
+
+                post.style.display = "block";
+
+                visibleCount++;
+
+            } else {
+
+                post.style.display = "none";
+
+            }
+
+        });
+
+
+        const emptyState =
+            document.getElementById("emptyState");
+
+
+        if (visibleCount === 0) {
+
+            emptyState.style.display = "block";
+
+        } else {
+
+            emptyState.style.display = "none";
+
+        }
+    }
+
+
+    /* =========================================================
+       SHARE
+    ========================================================= */
+
+    function sharePost() {
+
+        if (
+            navigator.clipboard &&
+            window.location
+        ) {
+
+            navigator.clipboard
+                .writeText(window.location.href)
+                .then(() => {
+
+                    alert(
+                        "Community page link copied."
+                    );
+
+                })
+                .catch(() => {
+
+                    alert(
+                        "You can copy the page URL and share it."
+                    );
+
+                });
+
+        } else {
+
+            alert(
+                "You can copy the page URL and share it."
+            );
+
+        }
+    }
+
+
+    /* =========================================================
+       MODAL
+    ========================================================= */
+
+    function closeModal() {
+
+        document
+            .getElementById("postModal")
+            .style.display = "none";
+    }
+
+
+    document
+        .getElementById("postModal")
+        .addEventListener(
+            "click",
+            function(event) {
+
+                if (event.target === this) {
+                    closeModal();
+                }
+
+            }
+        );
+
+
+    /* =========================================================
+       BASIC HTML ESCAPING
+    ========================================================= */
+
+    function escapeHTML(value) {
+
+        return value
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* =========================================================
+       REVEAL ANIMATION
+    ========================================================= */
+
+    const revealElements =
+        document.querySelectorAll(
+            ".post, .sidebar-card, .composer"
+        );
+
+
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.style.opacity = "1";
+
+                        entry.target.style.transform =
+                            "translateY(0)";
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.08
+            }
+        );
+
+
+    revealElements.forEach(element => {
+
+        element.style.opacity = "0";
+
+        element.style.transform =
+            "translateY(18px)";
+
+        element.style.transition =
+            "opacity 0.5s ease, transform 0.5s ease";
+
+        observer.observe(element);
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2944 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="PaisaGyaan investment awareness - understand investing, risk, returns, asset classes, mutual funds, stocks, bonds, gold and more."
+    >
+
+    <title>Investments | PaisaGyaan</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        /* =====================================================
+           INVESTMENTS PAGE
+           ===================================================== */
+
+        .investment-hero {
+            padding: 75px 0 65px;
+
+            background:
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(242, 184, 75, 0.20),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 10% 80%,
+                    rgba(47, 125, 87, 0.10),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #e8f5ed,
+                    #fafbf8
+                );
+        }
+
+        .investment-hero-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .investment-hero h1 {
+            max-width: 800px;
+            font-size: clamp(2.5rem, 5vw, 4.6rem);
+            line-height: 1.02;
+            letter-spacing: -2px;
+            margin: 18px 0;
+        }
+
+        .investment-hero h1 span {
+            color: var(--primary);
+        }
+
+        .investment-hero p {
+            max-width: 700px;
+            color: var(--text-light);
+            font-size: 1.08rem;
+            line-height: 1.8;
+        }
+
+        .investment-principles {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .principle {
+            display: flex;
+            gap: 13px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .principle:last-child {
+            border-bottom: none;
+        }
+
+        .principle-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            background: var(--primary-light);
+            border-radius: 11px;
+        }
+
+        .principle strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .principle span {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+
+        /* Navigation */
+
+        .investment-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 45px;
+        }
+
+        .investment-nav a {
+            padding: 9px 14px;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            background: white;
+            color: var(--text-light);
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .investment-nav a:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+
+        /* Sections */
+
+        .investment-section {
+            margin-bottom: 75px;
+            scroll-margin-top: 100px;
+        }
+
+        .investment-heading {
+            display: flex;
+            gap: 17px;
+            align-items: flex-start;
+            margin-bottom: 27px;
+        }
+
+        .investment-number {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background: var(--primary);
+            color: white;
+            font-weight: 800;
+        }
+
+        .investment-heading h2 {
+            font-size: 2rem;
+            margin-bottom: 6px;
+            line-height: 1.15;
+        }
+
+        .investment-heading p {
+            color: var(--text-light);
+        }
+
+
+        /* Cards */
+
+        .investment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 17px;
+        }
+
+        .investment-card {
+            padding: 24px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .investment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .investment-icon {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 15px;
+            border-radius: 13px;
+            background: var(--primary-light);
+            font-size: 1.3rem;
+        }
+
+        .investment-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .investment-card p {
+            color: var(--text-light);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+        .investment-card small {
+            display: block;
+            margin-top: 12px;
+            color: var(--text-muted);
+        }
+
+
+        /* Comparison */
+
+        .comparison-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+        }
+
+        .investment-table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+        }
+
+        .investment-table th,
+        .investment-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .investment-table th {
+            background: var(--surface-soft);
+            font-size: 0.85rem;
+        }
+
+        .investment-table td {
+            color: var(--text-light);
+            font-size: 0.86rem;
+        }
+
+        .investment-table tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* Risk meter */
+
+        .risk-box {
+            padding: 30px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .risk-meter {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin: 22px 0 10px;
+        }
+
+        .risk-level {
+            height: 14px;
+            border-radius: 20px;
+        }
+
+        .risk-low {
+            background: #b9dec5;
+        }
+
+        .risk-low-medium {
+            background: #d6e6a5;
+        }
+
+        .risk-medium {
+            background: #f0d99b;
+        }
+
+        .risk-high {
+            background: #efb58c;
+        }
+
+        .risk-very-high {
+            background: #e99a9a;
+        }
+
+        .risk-labels {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+
+        /* Formula */
+
+        .formula-box {
+            padding: 26px;
+            background: #f7f9f6;
+            border: 1px dashed var(--primary);
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+        }
+
+        .formula {
+            display: block;
+            padding: 16px;
+            margin: 12px 0;
+            background: white;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--primary-dark);
+        }
+
+
+        /* SIP Calculator */
+
+        .calculator-box {
+            padding: 30px;
+            background: linear-gradient(
+                135deg,
+                #eaf6ef,
+                #fffaf0
+            );
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .calculator-field label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 0.82rem;
+            font-weight: 750;
+        }
+
+        .calculator-field input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            font: inherit;
+            background: white;
+        }
+
+        .calculator-field input:focus {
+            border-color: var(--primary);
+        }
+
+        .calculator-result {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .result-card {
+            padding: 18px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .result-card span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-bottom: 5px;
+        }
+
+        .result-card strong {
+            font-size: 1.2rem;
+        }
+
+
+        /* Behaviour */
+
+        .bias-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 17px;
+        }
+
+        .bias-card {
+            padding: 23px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .bias-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .bias-card p {
+            color: var(--text-light);
+            font-size: 0.88rem;
+        }
+
+
+        /* Quiz */
+
+        .investment-quiz {
+            padding: 34px;
+            background: linear-gradient(
+                135deg,
+                #eef7f1,
+                #fff8e8
+            );
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .quiz-choice {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 15px;
+            text-align: left;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-choice:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .quiz-feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 17px;
+            background: white;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+
+        /* Red flags */
+
+        .red-flag-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 13px;
+        }
+
+        .red-flag {
+            display: flex;
+            gap: 12px;
+            padding: 17px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .red-flag-icon {
+            color: var(--danger);
+            font-size: 1.2rem;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .investment-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .investment-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .calculator-grid,
+            .calculator-result {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .investment-grid,
+            .bias-grid,
+            .red-flag-list {
+                grid-template-columns: 1fr;
+            }
+
+            .investment-hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .risk-meter {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+
+            .risk-level {
+                height: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="/" class="logo">
+
+            <span class="logo-mark">
+                ₹
+            </span>
+
+            <span>
+                Paisa<span>Gyaan</span>
+            </span>
+
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/learn">
+                Learn
+            </a>
+
+            <a
+                href="/investments"
+                class="active"
+            >
+                Investments
+            </a>
+
+            <a href="/loans">
+                Loans
+            </a>
+
+            <a href="/safety">
+                Safety
+            </a>
+
+            <a href="/scams">
+                Scams
+            </a>
+
+            <a href="/community">
+                Community
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="/login"
+                class="btn btn-outline"
+            >
+                Login
+            </a>
+
+            <a
+                href="/register"
+                class="btn btn-primary"
+            >
+                Get Started
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
+<section class="investment-hero">
+
+    <div class="container">
+
+        <div class="investment-hero-grid">
+
+
+            <div>
+
+                <div class="hero-badge">
+                    📈 Investment Awareness
+                </div>
+
+
+                <h1>
+
+                    Don't just invest.
+
+                    <span>
+                        Understand what you're investing in.
+                    </span>
+
+                </h1>
+
+
+                <p>
+
+                    Investing is not simply about finding an asset
+                    that went up in the past. It involves understanding
+                    goals, time horizon, risk, liquidity, costs,
+                    diversification and uncertainty.
+
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#fundamentals"
+                        class="btn btn-primary"
+                    >
+                        Learn Investing
+                    </a>
+
+                    <a
+                        href="#calculator"
+                        class="btn btn-secondary"
+                    >
+                        Try Calculator
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="investment-principles">
+
+                <h3>
+                    Before you invest
+                </h3>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        🎯
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Know your goal
+                        </strong>
+
+                        <span>
+                            Why is the money being invested?
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        ⏳
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Know your time horizon
+                        </strong>
+
+                        <span>
+                            When might you need the money?
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        ⚖️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Understand risk
+                        </strong>
+
+                        <span>
+                            What losses or fluctuations could occur?
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        🔍
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Verify the product
+                        </strong>
+
+                        <span>
+                            Understand costs, rules and regulation.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+
+<section class="section">
+
+<div class="container">
+
+
+<!-- =====================================================
+     NAVIGATION
+     ===================================================== -->
+
+<div class="investment-nav">
+
+    <a href="#fundamentals">
+        Fundamentals
+    </a>
+
+    <a href="#risk">
+        Risk
+    </a>
+
+    <a href="#asset-classes">
+        Asset Classes
+    </a>
+
+    <a href="#mutual-funds">
+        Mutual Funds
+    </a>
+
+    <a href="#stocks">
+        Stocks
+    </a>
+
+    <a href="#fixed-income">
+        Bonds & Deposits
+    </a>
+
+    <a href="#government">
+        Government Schemes
+    </a>
+
+    <a href="#gold">
+        Gold
+    </a>
+
+    <a href="#diversification">
+        Diversification
+    </a>
+
+    <a href="#calculator">
+        SIP Calculator
+    </a>
+
+    <a href="#behaviour">
+        Behaviour
+    </a>
+
+    <a href="#scams">
+        Red Flags
+    </a>
+
+</div>
+
+
+
+<!-- =====================================================
+     01 FUNDAMENTALS
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="fundamentals"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            01
+        </div>
+
+        <div>
+
+            <h2>
+                Investment Fundamentals
+            </h2>
+
+            <p>
+                Start here if the word “investment” still feels
+                complicated.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="investment-grid">
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🎯
+            </div>
+
+            <h3>
+                Goal
+            </h3>
+
+            <p>
+                Investing should connect to a purpose. A short-term
+                goal, long-term goal and retirement goal may require
+                different approaches.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                ⏳
+            </div>
+
+            <h3>
+                Time Horizon
+            </h3>
+
+            <p>
+                Time horizon means how long you expect to remain
+                invested before needing the money.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                ⚖️
+            </div>
+
+            <h3>
+                Risk
+            </h3>
+
+            <p>
+                Investment value can fluctuate. Different assets
+                have different types and levels of risk.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                💧
+            </div>
+
+            <h3>
+                Liquidity
+            </h3>
+
+            <p>
+                Liquidity refers to how easily an investment can
+                be converted into cash without significant delay
+                or loss caused by the transaction itself.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                💰
+            </div>
+
+            <h3>
+                Return
+            </h3>
+
+            <p>
+                Return represents the gain or loss from an investment.
+                Historical or expected returns are not guarantees
+                of future results.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🧾
+            </div>
+
+            <h3>
+                Costs
+            </h3>
+
+            <p>
+                Fees, taxes, spreads and other charges can affect
+                the amount you ultimately receive.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     02 RISK
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="risk"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            02
+        </div>
+
+        <div>
+
+            <h2>
+                Risk & Return
+            </h2>
+
+            <p>
+                There is no universal investment that is “best”
+                for everyone.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="risk-box">
+
+        <h3>
+            A simple way to think about investment risk
+        </h3>
+
+        <p>
+            Risk can come from market movements, credit/default,
+            inflation, interest-rate changes, liquidity constraints,
+            concentration and other factors.
+        </p>
+
+
+        <div class="risk-meter">
+
+            <div class="risk-level risk-low"></div>
+
+            <div class="risk-level risk-low-medium"></div>
+
+            <div class="risk-level risk-medium"></div>
+
+            <div class="risk-level risk-high"></div>
+
+            <div class="risk-level risk-very-high"></div>
+
+        </div>
+
+
+        <div class="risk-labels">
+
+            <span>
+                Lower
+            </span>
+
+            <span>
+                Higher
+            </span>
+
+        </div>
+
+
+        <div class="alert alert-warning">
+
+            <div class="alert-icon">
+                ⚠️
+            </div>
+
+            <div>
+
+                <strong>
+                    Important
+                </strong>
+
+                <p>
+                    “Low risk” does not mean “no risk”.
+                    Likewise, “high return” is not guaranteed
+                    simply because an investment is considered
+                    high-risk.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     03 ASSET CLASSES
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="asset-classes"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            03
+        </div>
+
+        <div>
+
+            <h2>
+                Major Investment Categories
+            </h2>
+
+            <p>
+                Different assets behave differently.
+                Learn the basic idea before going deeper.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="investment-grid">
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🏦
+            </div>
+
+            <h3>
+                Bank Deposits
+            </h3>
+
+            <p>
+                Deposit products can provide relatively predictable
+                interest according to their terms. They are different
+                from market-linked investments.
+            </p>
+
+            <small>
+                Examples: Savings accounts, FDs, RDs
+            </small>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                📈
+            </div>
+
+            <h3>
+                Equity
+            </h3>
+
+            <p>
+                Equity represents ownership in a company. Prices can
+                fluctuate significantly and returns are not guaranteed.
+            </p>
+
+            <small>
+                Example: Shares
+            </small>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                📜
+            </div>
+
+            <h3>
+                Debt / Fixed Income
+            </h3>
+
+            <p>
+                Debt instruments involve lending money to an issuer
+                under specified terms. Credit and interest-rate risks
+                can still exist.
+            </p>
+
+            <small>
+                Examples: Bonds, debt securities
+            </small>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+-                🪙
++                🥇
+            </div>
+
+            <h3>
+                Gold
+            </h3>
+
+            <p>
+                Gold can be held through physical forms or financial
+                products. Each form has different costs, risks and
+                characteristics.
+            </p>
+
+            <small>
+                Examples: Physical gold, ETFs, certain government-linked products
+            </small>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🏢
+            </div>
+
+            <h3>
+                REITs
+            </h3>
+
+            <p>
+                Real Estate Investment Trusts provide a way to obtain
+                exposure to income-generating real-estate assets through
+                a market-linked structure.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🌱
+            </div>
+
+            <h3>
+                Pension / Long-Term Products
+            </h3>
+
+            <p>
+                Certain retirement-oriented products are designed
+                around long-term financial goals and have specific
+                rules regarding contributions and withdrawals.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     04 MUTUAL FUNDS
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="mutual-funds"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            04
+        </div>
+
+        <div>
+
+            <h2>
+                Mutual Funds
+            </h2>
+
+            <p>
+                A mutual fund pools money from investors and invests
+                according to its stated investment objective and strategy.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="investment-grid">
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🧺
+            </div>
+
+            <h3>
+                Pooling
+            </h3>
+
+            <p>
+                Multiple investors contribute money to a common fund,
+                which is managed according to the scheme's objective.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                📊
+            </div>
+
+            <h3>
+                NAV
+            </h3>
+
+            <p>
+                Net Asset Value represents the per-unit value of a
+                mutual-fund scheme based on its assets and liabilities,
+                subject to the applicable methodology.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🔄
+            </div>
+
+            <h3>
+                SIP
+            </h3>
+
+            <p>
+                A Systematic Investment Plan is a method of investing
+                a fixed amount periodically into a mutual-fund scheme.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🧾
+            </div>
+
+            <h3>
+                Expense Ratio
+            </h3>
+
+            <p>
+                A mutual fund has operating expenses. The expense ratio
+                represents certain expenses charged to the scheme as
+                specified by applicable regulations.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                ⚠️
+            </div>
+
+            <h3>
+                Market Risk
+            </h3>
+
+            <p>
+                Mutual funds are not automatically risk-free. The level
+                and nature of risk depend on the scheme and its holdings.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🔍
+            </div>
+
+            <h3>
+                Read the Documents
+            </h3>
+
+            <p>
+                Understand the scheme objective, portfolio, costs,
+                risk information and applicable terms before investing.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     05 STOCKS
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="stocks"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            05
+        </div>
+
+        <div>
+
+            <h2>
+                Stocks & Equity
+            </h2>
+
+            <p>
+                Buying a company's share means owning a small part
+                of that company.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="investment-grid">
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🏢
+            </div>
+
+            <h3>
+                Ownership
+            </h3>
+
+            <p>
+                Equity shareholders have ownership interest in a company,
+                subject to the rights attached to the particular security.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                📈
+            </div>
+
+            <h3>
+                Price Movement
+            </h3>
+
+            <p>
+                Share prices can rise or fall because of company-specific,
+                economic, market and other factors.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                💰
+            </div>
+
+            <h3>
+                Dividends
+            </h3>
+
+            <p>
+                Some companies may distribute part of their profits
+                to shareholders through dividends, subject to applicable
+                decisions and rules.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                📚
+            </div>
+
+            <h3>
+                Research
+            </h3>
+
+            <p>
+                Investors can study financial statements, business models,
+                valuations, industry conditions and risks.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🧠
+            </div>
+
+            <h3>
+                Don't Follow Tips Blindly
+            </h3>
+
+            <p>
+                Social-media tips, Telegram groups and anonymous messages
+                are not substitutes for independent verification.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                ⚠️
+            </div>
+
+            <h3>
+                No Guaranteed Returns
+            </h3>
+
+            <p>
+                Equity investing involves market risk. Past performance
+                cannot guarantee future results.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     06 BONDS / FIXED INCOME
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="fixed-income"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            06
+        </div>
+
+        <div>
+
+            <h2>
+                Bonds & Fixed-Income Instruments
+            </h2>
+
+            <p>
+                Fixed-income investments still require risk awareness.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="comparison-wrapper">
+
+        <table class="investment-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Concept
+                    </th>
+
+                    <th>
+                        Meaning
+                    </th>
+
+                    <th>
+                        What to understand
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        Principal
+                    </td>
+
+                    <td>
+                        Original amount invested
+                    </td>
+
+                    <td>
+                        Understand repayment conditions.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Coupon / Interest
+                    </td>
+
+                    <td>
+                        Periodic interest according to the instrument's terms
+                    </td>
+
+                    <td>
+                        Check whether the rate is fixed or variable.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Maturity
+                    </td>
+
+                    <td>
+                        Date or period when the instrument reaches maturity
+                    </td>
+
+                    <td>
+                        Consider whether you need liquidity earlier.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Credit Risk
+                    </td>
+
+                    <td>
+                        Possibility that an issuer fails to meet obligations
+                    </td>
+
+                    <td>
+                        Higher stated return can sometimes accompany
+                        higher credit risk.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Interest-Rate Risk
+                    </td>
+
+                    <td>
+                        Changes in interest rates can affect market values
+                    </td>
+
+                    <td>
+                        Particularly relevant for market-traded debt securities.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     07 GOVERNMENT SCHEMES
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="government"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            07
+        </div>
+
+        <div>
+
+            <h2>
+                Government-Backed / Long-Term Schemes
+            </h2>
+
+            <p>
+                Some government-related savings and retirement
+                schemes have specific eligibility, interest,
+                tax and withdrawal rules.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="investment-grid">
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                👧
+            </div>
+
+            <h3>
+                Sukanya Samriddhi
+            </h3>
+
+            <p>
+                A government-backed savings scheme intended for
+                eligible girl children, subject to its applicable
+                rules and conditions.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🌱
+            </div>
+
+            <h3>
+                PPF
+            </h3>
+
+            <p>
+                Public Provident Fund is a long-term savings scheme
+                with defined rules relating to contributions,
+                interest, maturity and withdrawals.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                👴
+            </div>
+
+            <h3>
+                NPS
+            </h3>
+
+            <p>
+                National Pension System is a retirement-oriented
+                pension framework with its own contribution,
+                investment and withdrawal rules.
+            </p>
+
+        </article>
+
+
+    </div>
+
+
+    <div class="alert alert-success">
+
+        <div class="alert-icon">
+            📌
+        </div>
+
+        <div>
+
+            <strong>
+                Always verify current rules.
+            </strong>
+
+            <p>
+                Interest rates, tax treatment, eligibility and
+                withdrawal rules can change. Use current official
+                government or regulator information before making
+                a decision.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     08 GOLD
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="gold"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            08
+        </div>
+
+        <div>
+
+            <h2>
+                Gold & Gold-Linked Products
+            </h2>
+
+            <p>
+                “Gold” can mean very different things depending
+                on how it is held.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="investment-grid">
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🪙
+            </div>
+
+            <h3>
+                Physical Gold
+            </h3>
+
+            <p>
+                Jewellery, coins and bars involve considerations
+                such as purity, making charges, storage and resale.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                📊
+            </div>
+
+            <h3>
+                Gold ETFs
+            </h3>
+
+            <p>
+                Exchange-traded products designed to provide
+                exposure to gold prices through a market-linked
+                structure.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                📄
+            </div>
+
+            <h3>
+                Other Gold Products
+            </h3>
+
+            <p>
+                Other gold-linked products may have different
+                structures, costs, tax treatment and risks.
+                Understand the specific product rather than
+                treating every gold investment as identical.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     09 DIVERSIFICATION
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="diversification"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            09
+        </div>
+
+        <div>
+
+            <h2>
+                Diversification & Asset Allocation
+            </h2>
+
+            <p>
+                “Don't put all your eggs in one basket” is useful,
+                but diversification is more than owning many things.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="investment-grid">
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🧺
+            </div>
+
+            <h3>
+                Diversification
+            </h3>
+
+            <p>
+                Spreading investments across different assets,
+                sectors or securities can reduce concentration
+                risk.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                ⚖️
+            </div>
+
+            <h3>
+                Asset Allocation
+            </h3>
+
+            <p>
+                Asset allocation concerns how much of a portfolio
+                is exposed to different asset categories.
+            </p>
+
+        </article>
+
+
+        <article class="investment-card">
+
+            <div class="investment-icon">
+                🔄
+            </div>
+
+            <h3>
+                Rebalancing
+            </h3>
+
+            <p>
+                Over time, market movements can change portfolio
+                weights. Rebalancing means adjusting them according
+                to the chosen strategy and rules.
+            </p>
+
+        </article>
+
+
+    </div>
+
+
+    <div class="formula-box">
+
+        <strong>
+            Remember:
+        </strong>
+
+        <span class="formula">
+            Diversification ≠ Guaranteed Profit
+        </span>
+
+        <p>
+            Diversification can reduce concentration risk,
+            but it cannot eliminate market losses or guarantee
+            a particular return.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     10 SIP CALCULATOR
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="calculator"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            10
+        </div>
+
+        <div>
+
+            <h2>
+                SIP Illustration Calculator
+            </h2>
+
+            <p>
+                See how periodic investing can grow mathematically
+                under an assumed return. This is an illustration,
+                not a return guarantee.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="calculator-box">
+
+        <div class="calculator-grid">
+
+
+            <div class="calculator-field">
+
+                <label for="sipAmount">
+                    Monthly Investment (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="sipAmount"
+                    value="5000"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="calculator-field">
+
+                <label for="sipRate">
+                    Assumed Annual Return (%)
+                </label>
+
+                <input
+                    type="number"
+                    id="sipRate"
+                    value="10"
+                    min="0"
+                    step="0.1"
+                >
+
+            </div>
+
+
+            <div class="calculator-field">
+
+                <label for="sipYears">
+                    Time Period (Years)
+                </label>
+
+                <input
+                    type="number"
+                    id="sipYears"
+                    value="10"
+                    min="1"
+                >
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="calculateSIP()"
+        >
+            Calculate Illustration
+        </button>
+
+
+        <div class="calculator-result">
+
+
+            <div class="result-card">
+
+                <span>
+                    Total Invested
+                </span>
+
+                <strong id="totalInvested">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <span>
+                    Illustrative Value
+                </span>
+
+                <strong id="futureValue">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <span>
+                    Illustrative Growth
+                </span>
+
+                <strong id="estimatedGain">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <p style="margin-top:18px; font-size:0.78rem; color:var(--text-muted);">
+
+            This calculator uses a simplified mathematical assumption.
+            Actual investment returns can be higher or lower, may be
+            volatile, and are not guaranteed.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     11 BEHAVIOURAL FINANCE
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="behaviour"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            11
+        </div>
+
+        <div>
+
+            <h2>
+                The Psychology of Investing
+            </h2>
+
+            <p>
+                Sometimes the biggest investment mistake isn't
+                mathematical. It's behavioural.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="bias-grid">
+
+
+        <article class="bias-card">
+
+            <h3>
+                🐑 Herd Behaviour
+            </h3>
+
+            <p>
+                Buying because everyone around you appears to be
+                buying can make you ignore your own analysis and
+                risk tolerance.
+            </p>
+
+        </article>
+
+
+        <article class="bias-card">
+
+            <h3>
+                😨 Panic Selling
+            </h3>
+
+            <p>
+                Fear during market declines can lead investors to
+                make rushed decisions without considering their
+                original objective and time horizon.
+            </p>
+
+        </article>
+
+
+        <article class="bias-card">
+
+            <h3>
+                🤑 FOMO
+            </h3>
+
+            <p>
+                Fear of missing out can make people chase assets
+                after a sharp rise or act without understanding
+                the underlying product.
+            </p>
+
+        </article>
+
+
+        <article class="bias-card">
+
+            <h3>
+                🧠 Confirmation Bias
+            </h3>
+
+            <p>
+                People may look mainly for information that supports
+                what they already believe while ignoring conflicting
+                evidence.
+            </p>
+
+        </article>
+
+
+        <article class="bias-card">
+
+            <h3>
+                🎰 Recency Bias
+            </h3>
+
+            <p>
+                Recent performance can feel more important than
+                longer-term evidence, even when the recent period
+                is not representative.
+            </p>
+
+        </article>
+
+
+        <article class="bias-card">
+
+            <h3>
+                💎 “I Know It Will Rise”
+            </h3>
+
+            <p>
+                Confidence is not the same thing as certainty.
+                Markets contain uncertainty, and no one can
+                guarantee future prices.
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     12 INVESTMENT SCAMS
+     ===================================================== -->
+
+<section
+    class="investment-section"
+    id="scams"
+>
+
+    <div class="investment-heading">
+
+        <div class="investment-number">
+            12
+        </div>
+
+        <div>
+
+            <h2>
+                Investment Scam Red Flags
+            </h2>
+
+            <p>
+                Financial literacy also means knowing when to walk away.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="red-flag-list">
+
+
+        <div class="red-flag">
+
+            <div class="red-flag-icon">
+                🚩
+            </div>
+
+            <div>
+                <strong>
+                    Guaranteed high returns
+                </strong>
+
+                <p>
+                    Be cautious when someone presents high,
+                    fixed or guaranteed returns as if risk does
+                    not exist.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="red-flag">
+
+            <div class="red-flag-icon">
+                🚩
+            </div>
+
+            <div>
+                <strong>
+                    “Secret” trading strategy
+                </strong>
+
+                <p>
+                    Claims that only a special group knows a
+                    guaranteed market formula deserve scrutiny.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="red-flag">
+
+            <div class="red-flag-icon">
+                🚩
+            </div>
+
+            <div>
+                <strong>
+                    Pressure to act immediately
+                </strong>
+
+                <p>
+                    Urgency can be used to prevent you from
+                    independently verifying an opportunity.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="red-flag">
+
+            <div class="red-flag-icon">
+                🚩
+            </div>
+
+            <div>
+                <strong>
+                    Asking for OTP / PIN
+                </strong>
+
+                <p>
+                    Never share sensitive authentication
+                    information merely because someone claims
+                    to be from a financial institution.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="red-flag">
+
+            <div class="red-flag-icon">
+                🚩
+            </div>
+
+            <div>
+                <strong>
+                    Fake celebrity or expert
+                </strong>
+
+                <p>
+                    Images, names and testimonials can be
+                    manipulated. Verify the actual source.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="red-flag">
+
+            <div class="red-flag-icon">
+                🚩
+            </div>
+
+            <div>
+                <strong>
+                    Unverified apps or links
+                </strong>
+
+                <p>
+                    Avoid installing unknown applications or
+                    submitting financial information through
+                    suspicious links.
+                </p>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="alert alert-danger">
+
+        <div class="alert-icon">
+            🛑
+        </div>
+
+        <div>
+
+            <strong>
+                Stop. Verify. Then decide.
+            </strong>
+
+            <p>
+                If an investment opportunity cannot be independently
+                verified, don't let urgency force a financial decision.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FINAL QUIZ
+     ===================================================== -->
+
+<section class="investment-section">
+
+    <div class="investment-quiz">
+
+        <span class="section-label">
+            Investment Knowledge Check
+        </span>
+
+
+        <h2>
+            🧠 What does diversification actually do?
+        </h2>
+
+
+        <p>
+            Choose the most accurate statement.
+        </p>
+
+
+        <button
+            class="quiz-choice"
+            onclick="investmentAnswer(false)"
+        >
+            A. It guarantees that every investment will make money.
+        </button>
+
+
+        <button
+            class="quiz-choice"
+            onclick="investmentAnswer(true)"
+        >
+            B. It can reduce concentration in one investment or asset.
+        </button>
+
+
+        <button
+            class="quiz-choice"
+            onclick="investmentAnswer(false)"
+        >
+            C. It guarantees a specific annual return.
+        </button>
+
+
+        <button
+            class="quiz-choice"
+            onclick="investmentAnswer(false)"
+        >
+            D. It completely removes investment risk.
+        </button>
+
+
+        <div
+            class="quiz-feedback"
+            id="investmentFeedback"
+        ></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DISCLAIMER
+     ===================================================== -->
+
+<div class="alert alert-success">
+
+    <div class="alert-icon">
+        ℹ️
+    </div>
+
+    <div>
+
+        <strong>
+            PaisaGyaan is an awareness platform.
+        </strong>
+
+        <p>
+            This page provides general financial education and
+            illustrations, not individualized investment advice.
+            Investment products can involve loss of capital.
+            Always verify current information, product documents,
+            charges, tax rules and regulatory status through
+            appropriate official sources before making financial
+            decisions.
+        </p>
+
+    </div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+
+            <div class="footer-brand">
+
+                <h2>
+                    PaisaGyaan 💰
+                </h2>
+
+                <p>
+                    Learn money. Understand money.
+                    Protect money. Make informed decisions.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Learn
+                </h4>
+
+                <a href="/learn">
+                    Financial Basics
+                </a>
+
+                <a href="/investments">
+                    Investments
+                </a>
+
+                <a href="/loans">
+                    Loans
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Protect
+                </h4>
+
+                <a href="/safety">
+                    Safety
+                </a>
+
+                <a href="/scams">
+                    Scam Awareness
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Community
+                </h4>
+
+                <a href="/community">
+                    Discussions
+                </a>
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 PaisaGyaan · Financial Awareness & Education
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+    /* =====================================================
+       SIP CALCULATOR
+       ===================================================== */
+
+    function calculateSIP() {
+
+        const monthly =
+            Number(
+                document.getElementById("sipAmount").value
+            );
+
+        const annualRate =
+            Number(
+                document.getElementById("sipRate").value
+            );
+
+        const years =
+            Number(
+                document.getElementById("sipYears").value
+            );
+
+
+        if (
+            monthly <= 0 ||
+            annualRate < 0 ||
+            years <= 0
+        ) {
+
+            alert(
+                "Please enter valid values."
+            );
+
+            return;
+
+        }
+
+
+        const months =
+            years * 12;
+
+
+        const monthlyRate =
+            annualRate / 100 / 12;
+
+
+        let futureValue;
+
+
+        if (monthlyRate === 0) {
+
+            futureValue =
+                monthly * months;
+
+        } else {
+
+            futureValue =
+                monthly *
+                (
+                    (
+                        Math.pow(
+                            1 + monthlyRate,
+                            months
+                        ) - 1
+                    ) /
+                    monthlyRate
+                ) *
+                (1 + monthlyRate);
+
+        }
+
+
+        const invested =
+            monthly * months;
+
+
+        const gain =
+            futureValue - invested;
+
+
+        document.getElementById(
+            "totalInvested"
+        ).textContent =
+            formatCurrency(invested);
+
+
+        document.getElementById(
+            "futureValue"
+        ).textContent =
+            formatCurrency(futureValue);
+
+
+        document.getElementById(
+            "estimatedGain"
+        ).textContent =
+            formatCurrency(gain);
+
+    }
+
+
+    function formatCurrency(number) {
+
+        return "₹" +
+            Math.round(number).toLocaleString(
+                "en-IN"
+            );
+
+    }
+
+
+    calculateSIP();
+
+
+
+    /* =====================================================
+       QUIZ
+       ===================================================== */
+
+    function investmentAnswer(isCorrect) {
+
+        const feedback =
+            document.getElementById(
+                "investmentFeedback"
+            );
+
+
+        feedback.style.display =
+            "block";
+
+
+        if (isCorrect) {
+
+            feedback.innerHTML =
+                "✅ Correct! Diversification can reduce concentration risk, but it cannot guarantee profits or eliminate all investment risk.";
+
+        } else {
+
+            feedback.innerHTML =
+                "❌ Not quite. Diversification can reduce concentration in one investment or asset, but it does not guarantee returns or remove all risk.";
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       SCROLL REVEAL
+       ===================================================== */
+
+    const cards =
+        document.querySelectorAll(
+            ".investment-card, .bias-card, .red-flag"
+        );
+
+
+    const observer =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach(
+                    (entry) => {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            entry.target.style.opacity =
+                                "1";
+
+                            entry.target.style.transform =
+                                "translateY(0)";
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+            {
+                threshold: 0.08
+            }
+        );
+
+
+    cards.forEach(
+        (card) => {
+
+            card.style.opacity =
+                "0";
+
+            card.style.transform =
+                "translateY(18px)";
+
+            card.style.transition =
+                "opacity 0.55s ease, transform 0.55s ease";
+
+            observer.observe(card);
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Financial Safety | PaisaGyaan</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* =========================================================
+           SAFETY PAGE
+        ========================================================= */
+
+        .safety-nav {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .safety-nav a {
+            text-decoration: none;
+            padding: 10px 17px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--text);
+            background: white;
+            font-size: 0.9rem;
+            transition: 0.25s ease;
+        }
+
+        .safety-nav a:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .danger-box {
+            background: #fff4f2;
+            border: 1px solid #f4c6bf;
+            border-left: 5px solid #d9534f;
+            padding: 22px;
+            border-radius: var(--radius-md);
+            margin: 25px 0;
+        }
+
+        .danger-box h3 {
+            margin-top: 0;
+            color: #a93226;
+        }
+
+        .safe-box {
+            background: #f1faf5;
+            border: 1px solid #bfe3ce;
+            border-left: 5px solid var(--primary);
+            padding: 22px;
+            border-radius: var(--radius-md);
+            margin: 25px 0;
+        }
+
+        .safe-box h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .safety-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 25px;
+        }
+
+        .safety-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            transition: 0.25s ease;
+        }
+
+        .safety-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .safety-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: #eef8f2;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .safety-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .safety-card ul {
+            padding-left: 20px;
+        }
+
+        .safety-card li {
+            margin-bottom: 8px;
+        }
+
+        .rule-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 25px;
+        }
+
+        .rule {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+        }
+
+        .rule strong {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 1.05rem;
+        }
+
+        .do-not {
+            color: #b03a2e;
+        }
+
+        .do-this {
+            color: var(--primary);
+        }
+
+        /* Simulator */
+
+        .simulator {
+            margin-top: 35px;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            background: #fffdf7;
+            border: 1px solid var(--border);
+        }
+
+        .message-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 22px;
+            margin: 20px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .fake-message {
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .simulator-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .choice-btn {
+            border: none;
+            cursor: pointer;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .choice-btn.primary-choice {
+            background: var(--primary);
+            color: white;
+        }
+
+        .choice-btn.secondary-choice {
+            background: #eee;
+            color: var(--text);
+        }
+
+        .sim-result {
+            display: none;
+            margin-top: 22px;
+            padding: 20px;
+            border-radius: 14px;
+            line-height: 1.7;
+        }
+
+        .sim-result.good {
+            background: #edf9f1;
+            border: 1px solid #bde0c8;
+        }
+
+        .sim-result.bad {
+            background: #fff1ef;
+            border: 1px solid #efc0b9;
+        }
+
+        .red-flag {
+            display: inline-block;
+            margin: 5px 5px 0 0;
+            padding: 6px 10px;
+            background: #fff0ee;
+            color: #a93226;
+            border-radius: 999px;
+            font-size: 0.8rem;
+        }
+
+        /* Password meter */
+
+        .password-demo {
+            margin-top: 25px;
+            background: white;
+            padding: 25px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .strength-bar {
+            height: 9px;
+            background: #eee;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: 0.3s ease;
+        }
+
+        .strength-text {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Emergency */
+
+        .emergency-section {
+            margin-top: 40px;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            background: #fff7ed;
+            border: 1px solid #f1d2a9;
+        }
+
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .emergency-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid #ead7bc;
+        }
+
+        .emergency-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 8px 0;
+        }
+
+        /* Checklist */
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .checklist li {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .checklist label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .checklist input {
+            margin-top: 4px;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 900px) {
+            .safety-grid,
+            .emergency-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .rule-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .safety-grid,
+            .emergency-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .simulator {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <div class="container nav-container">
+
+        <a href="/" class="logo">
+            Paisa<span>Gyaan</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/learn">Learn</a>
+            <a href="/investments">Investments</a>
+            <a href="/loans">Loans</a>
+            <a href="/safety" class="active">Safety</a>
+            <a href="/scams">Scams</a>
+            <a href="/community">Community</a>
+            <a href="/login">Login</a>
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<header class="page-hero">
+
+    <div class="container">
+
+        <span class="eyebrow">FINANCIAL SAFETY</span>
+
+        <h1>
+            Protect your money<br>
+            before you have to recover it.
+        </h1>
+
+        <p>
+            Digital payments make life easier — but they also create new
+            ways for criminals to target people. Learn the habits that
+            keep your money, accounts and identity safer.
+        </p>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- =========================================================
+     PAGE NAV
+========================================================= -->
+
+<div class="safety-nav">
+
+    <a href="#upi">UPI</a>
+    <a href="#otp">OTP & PIN</a>
+    <a href="#phishing">Phishing</a>
+    <a href="#sim">SIM Swap</a>
+    <a href="#remote">Remote Access</a>
+    <a href="#passwords">Passwords</a>
+    <a href="#simulator">Simulator</a>
+    <a href="#emergency">Emergency</a>
+
+</div>
+
+
+<!-- =========================================================
+     GOLDEN RULE
+========================================================= -->
+
+<section class="safe-box">
+
+    <h3>🔐 The golden rule of financial safety</h3>
+
+    <p>
+        <strong>Never share your OTP, UPI PIN, ATM PIN, CVV, password
+        or banking credentials with anyone.</strong>
+    </p>
+
+    <p>
+        A legitimate bank or payment service should not need you to
+        reveal your secret authentication credentials over a call,
+        message or social-media chat.
+    </p>
+
+</section>
+
+
+<!-- =========================================================
+     SAFETY TOPICS
+========================================================= -->
+
+<section class="section" id="upi">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">01 · DIGITAL PAYMENTS</span>
+
+        <h2>UPI safety</h2>
+
+        <p>
+            UPI is designed for convenient digital payments, but the
+            biggest risk is often social engineering — convincing you
+            to perform an action yourself.
+        </p>
+
+    </div>
+
+
+    <div class="safety-grid">
+
+        <article class="safety-card">
+
+            <div class="safety-icon">📲</div>
+
+            <h3>Receiving money</h3>
+
+            <p>
+                Receiving money does not normally require you to enter
+                your UPI PIN.
+            </p>
+
+            <ul>
+                <li>Check the transaction notification.</li>
+                <li>Do not enter your PIN just to receive money.</li>
+                <li>Verify the amount and sender.</li>
+            </ul>
+
+        </article>
+
+
+        <article class="safety-card">
+
+            <div class="safety-icon">🔗</div>
+
+            <h3>Unknown QR codes</h3>
+
+            <p>
+                Scanning a QR code can initiate a payment flow.
+                Do not scan random codes because someone says you
+                will “receive” money.
+            </p>
+
+            <ul>
+                <li>Check who requested the payment.</li>
+                <li>Read the payment screen carefully.</li>
+                <li>Never rush because of pressure.</li>
+            </ul>
+
+        </article>
+
+
+        <article class="safety-card">
+
+            <div class="safety-icon">👀</div>
+
+            <h3>Verify before paying</h3>
+
+            <p>
+                Before confirming a payment, check the recipient,
+                amount and purpose.
+            </p>
+
+            <ul>
+                <li>Check the displayed name.</li>
+                <li>Check the amount.</li>
+                <li>Stop if anything looks unusual.</li>
+            </ul>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     OTP / PIN
+========================================================= -->
+
+<section class="section" id="otp">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">02 · AUTHENTICATION</span>
+
+        <h2>OTP, PIN & CVV</h2>
+
+        <p>
+            These are security credentials, not information to be
+            casually shared with customer-care agents, friends,
+            delivery personnel or callers.
+        </p>
+
+    </div>
+
+
+    <div class="rule-grid">
+
+        <div class="rule">
+
+            <strong class="do-not">❌ Never share</strong>
+
+            <p>
+                OTPs, UPI PINs, ATM PINs, CVVs, passwords, card
+                credentials or authentication codes.
+            </p>
+
+        </div>
+
+
+        <div class="rule">
+
+            <strong class="do-this">✅ Keep private</strong>
+
+            <p>
+                Enter sensitive credentials only inside the legitimate
+                banking or payment interface you intentionally opened.
+            </p>
+
+        </div>
+
+
+        <div class="rule">
+
+            <strong class="do-not">❌ Don't trust urgency</strong>
+
+            <p>
+                “Your account will be blocked in 5 minutes” is a
+                pressure tactic. Stop and verify independently.
+            </p>
+
+        </div>
+
+
+        <div class="rule">
+
+            <strong class="do-this">✅ Call independently</strong>
+
+            <p>
+                If you need support, find the official contact details
+                yourself rather than trusting a number sent by a stranger.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PHISHING
+========================================================= -->
+
+<section class="section" id="phishing">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">03 · SOCIAL ENGINEERING</span>
+
+        <h2>Phishing, smishing & vishing</h2>
+
+        <p>
+            Scammers may use email, SMS, phone calls or social media
+            to create fear, urgency or excitement.
+        </p>
+
+    </div>
+
+
+    <div class="safety-grid">
+
+        <article class="safety-card">
+
+            <div class="safety-icon">📧</div>
+
+            <h3>Phishing</h3>
+
+            <p>
+                Fraudulent emails or websites designed to trick you
+                into revealing information or making a payment.
+            </p>
+
+            <p>
+                <strong>Red flag:</strong> suspicious links,
+                unexpected attachments or urgent requests.
+            </p>
+
+        </article>
+
+
+        <article class="safety-card">
+
+            <div class="safety-icon">💬</div>
+
+            <h3>Smishing</h3>
+
+            <p>
+                Phishing delivered through SMS or messaging platforms.
+            </p>
+
+            <p>
+                <strong>Red flag:</strong> “Click here to update KYC”
+                or “account will be blocked.”
+            </p>
+
+        </article>
+
+
+        <article class="safety-card">
+
+            <div class="safety-icon">📞</div>
+
+            <h3>Vishing</h3>
+
+            <p>
+                Fraud through phone calls where the caller pretends
+                to be from a bank, company or authority.
+            </p>
+
+            <p>
+                <strong>Red flag:</strong> asking for OTP, PIN or
+                immediate payment.
+            </p>
+
+        </article>
+
+    </div>
+
+
+    <div class="danger-box">
+
+        <h3>🚨 Remember: caller ID is not proof of identity</h3>
+
+        <p>
+            A caller may know your name, phone number, bank name or
+            other basic information. That does not prove that they
+            represent the organisation they claim to represent.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SIM SWAP
+========================================================= -->
+
+<section class="section" id="sim">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">04 · MOBILE SECURITY</span>
+
+        <h2>SIM-swap & mobile-number risks</h2>
+
+        <p>
+            Your mobile number may be connected to banking,
+            payment and account-recovery systems. Protect it like
+            an important part of your financial identity.
+        </p>
+
+    </div>
+
+
+    <div class="safety-grid">
+
+        <article class="safety-card">
+
+            <div class="safety-icon">📱</div>
+
+            <h3>Watch for sudden loss of service</h3>
+
+            <p>
+                Unexpected loss of mobile connectivity can have
+                multiple causes, but if it happens suddenly and
+                remains unexplained, investigate it.
+            </p>
+
+        </article>
+
+
+        <article class="safety-card">
+
+            <div class="safety-icon">🔒</div>
+
+            <h3>Protect your SIM</h3>
+
+            <ul>
+                <li>Use a SIM PIN where appropriate.</li>
+                <li>Protect your phone and email accounts.</li>
+                <li>Don't publish unnecessary personal information.</li>
+            </ul>
+
+        </article>
+
+
+        <article class="safety-card">
+
+            <div class="safety-icon">🏦</div>
+
+            <h3>Act quickly if something feels wrong</h3>
+
+            <p>
+                If you suspect unauthorised activity, contact your
+                telecom provider and financial institution through
+                official channels.
+            </p>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     REMOTE ACCESS
+========================================================= -->
+
+<section class="section" id="remote">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">05 · DEVICE SECURITY</span>
+
+        <h2>Remote-access app scams</h2>
+
+        <p>
+            A scammer may ask you to install an application so they
+            can “help” with a refund, KYC, technical problem or
+            account verification.
+        </p>
+
+    </div>
+
+
+    <div class="danger-box">
+
+        <h3>⚠️ Don't give strangers control of your device</h3>
+
+        <p>
+            Remote-access software can allow another person to view
+            or interact with your device. Never install such software
+            merely because an unexpected caller tells you to.
+        </p>
+
+    </div>
+
+
+    <div class="rule-grid">
+
+        <div class="rule">
+
+            <strong class="do-not">
+                ❌ “Install this app for verification”
+            </strong>
+
+            <p>
+                Stop. Verify the request independently through the
+                organisation's official support channel.
+            </p>
+
+        </div>
+
+
+        <div class="rule">
+
+            <strong class="do-not">
+                ❌ “Show me your screen”
+            </strong>
+
+            <p>
+                Don't share your screen while opening banking or
+                payment applications.
+            </p>
+
+        </div>
+
+
+        <div class="rule">
+
+            <strong class="do-this">
+                ✅ Use official apps
+            </strong>
+
+            <p>
+                Download financial applications through trusted,
+                official app stores and verify the publisher.
+            </p>
+
+        </div>
+
+
+        <div class="rule">
+
+            <strong class="do-this">
+                ✅ Review app permissions
+            </strong>
+
+            <p>
+                Remove unnecessary permissions and uninstall apps
+                you no longer need.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PASSWORDS
+========================================================= -->
+
+<section class="section" id="passwords">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">06 · ACCOUNT SECURITY</span>
+
+        <h2>Passwords & multi-factor authentication</h2>
+
+        <p>
+            A strong password is useful, but account security works
+            best when multiple protective layers are used.
+        </p>
+
+    </div>
+
+
+    <div class="safety-grid">
+
+        <article class="safety-card">
+
+            <div class="safety-icon">🔑</div>
+
+            <h3>Use unique passwords</h3>
+
+            <p>
+                Avoid using the same password across banking, email,
+                social media and other services.
+            </p>
+
+        </article>
+
+
+        <article class="safety-card">
+
+            <div class="safety-icon">🛡️</div>
+
+            <h3>Enable MFA</h3>
+
+            <p>
+                Where available, use multi-factor authentication to
+                add another layer beyond your password.
+            </p>
+
+        </article>
+
+
+        <article class="safety-card">
+
+            <div class="safety-icon">🚫</div>
+
+            <h3>Avoid predictable passwords</h3>
+
+            <p>
+                Names, birthdays, phone numbers and simple patterns
+                are poor choices for important accounts.
+            </p>
+
+        </article>
+
+    </div>
+
+
+    <div class="password-demo">
+
+        <h3>🔎 Password strength demo</h3>
+
+        <p>
+            Try a sample password below. Don't enter your real
+            banking or email password.
+        </p>
+
+        <input
+            type="text"
+            id="passwordDemo"
+            class="password-input"
+            placeholder="Try a sample password..."
+            oninput="checkPasswordStrength()"
+        >
+
+        <div class="strength-bar">
+            <div id="strengthFill" class="strength-fill"></div>
+        </div>
+
+        <div id="strengthText" class="strength-text">
+            Enter a sample password to check its characteristics.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SAFETY SIMULATOR
+========================================================= -->
+
+<section class="section" id="simulator">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">INTERACTIVE CHALLENGE</span>
+
+        <h2>Would you click this?</h2>
+
+        <p>
+            Read the message carefully. Don't react emotionally.
+            Look for the clues before choosing what you would do.
+        </p>
+
+    </div>
+
+
+    <div class="simulator">
+
+        <div class="message-box">
+
+            <div class="message-header">
+
+                <span>
+                    📩 SMS · Unknown Sender
+                </span>
+
+                <span>
+                    Just now
+                </span>
+
+            </div>
+
+
+            <div class="fake-message">
+
+                <strong>
+                    Your bank account will be BLOCKED today.
+                </strong>
+
+                <br><br>
+
+                Dear Customer,
+
+                <br><br>
+
+                Your KYC has expired. To prevent account suspension,
+                verify your details immediately using the link below.
+
+                <br><br>
+
+                <strong>
+                    👉 http://bank-verify-example.com
+                </strong>
+
+                <br><br>
+
+                Failure to verify within 30 minutes may result in
+                account restrictions.
+
+            </div>
+
+        </div>
+
+
+        <p>
+            <strong>What would you do?</strong>
+        </p>
+
+
+        <div class="simulator-buttons">
+
+            <button
+                class="choice-btn primary-choice"
+                onclick="simulatorAnswer('safe')">
+
+                🔍 Verify independently first
+
+            </button>
+
+
+            <button
+                class="choice-btn secondary-choice"
+                onclick="simulatorAnswer('click')">
+
+                🔗 Click the link immediately
+
+            </button>
+
+
+            <button
+                class="choice-btn secondary-choice"
+                onclick="simulatorAnswer('reply')">
+
+                💬 Reply and ask if it's genuine
+
+            </button>
+
+        </div>
+
+
+        <div id="simResult" class="sim-result"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PERSONAL SAFETY CHECKLIST
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">QUICK CHECK</span>
+
+        <h2>How financially safe are your habits?</h2>
+
+        <p>
+            Tick the habits you already follow.
+        </p>
+
+    </div>
+
+
+    <ul class="checklist">
+
+        <li>
+            <label>
+                <input type="checkbox">
+                I never share OTPs, UPI PINs or ATM PINs.
+            </label>
+        </li>
+
+        <li>
+            <label>
+                <input type="checkbox">
+                I verify payment details before confirming a transaction.
+            </label>
+        </li>
+
+        <li>
+            <label>
+                <input type="checkbox">
+                I don't click unexpected banking links.
+            </label>
+        </li>
+
+        <li>
+            <label>
+                <input type="checkbox">
+                I use different passwords for important accounts.
+            </label>
+        </li>
+
+        <li>
+            <label>
+                <input type="checkbox">
+                I use multi-factor authentication where available.
+            </label>
+        </li>
+
+        <li>
+            <label>
+                <input type="checkbox">
+                I don't install remote-access apps because of an
+                unexpected caller.
+            </label>
+        </li>
+
+        <li>
+            <label>
+                <input type="checkbox">
+                I verify customer-care numbers through official sources.
+            </label>
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- =========================================================
+     EMERGENCY
+========================================================= -->
+
+<section class="emergency-section" id="emergency">
+
+    <span class="eyebrow">IF FRAUD HAPPENS</span>
+
+    <h2>Act quickly.</h2>
+
+    <p>
+        If you notice an unauthorised financial transaction,
+        don't wait for the situation to “sort itself out.”
+        Contact the relevant financial institution through its
+        official channels and report suspected cybercrime promptly.
+    </p>
+
+
+    <div class="emergency-grid">
+
+        <div class="emergency-card">
+
+            <strong>Cyber financial fraud reporting</strong>
+
+            <div class="emergency-number">
+                1930
+            </div>
+
+            <p>
+                India's dedicated helpline for reporting
+                cyber financial fraud.
+            </p>
+
+        </div>
+
+
+        <div class="emergency-card">
+
+            <strong>Online reporting</strong>
+
+            <div class="emergency-number">
+                🌐
+            </div>
+
+            <p>
+                Use the National Cyber Crime Reporting Portal
+                for online cybercrime complaints.
+            </p>
+
+        </div>
+
+
+        <div class="emergency-card">
+
+            <strong>Contact your bank</strong>
+
+            <div class="emergency-number">
+                🏦
+            </div>
+
+            <p>
+                Contact your bank/payment provider through its
+                official website or app and report the transaction.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FINAL REMINDER
+========================================================= -->
+
+<section class="section">
+
+    <div class="safe-box">
+
+        <h3>💡 Pause before you pay</h3>
+
+        <p>
+            The strongest security tool is often a few seconds of
+            deliberate thinking.
+        </p>
+
+        <p>
+            <strong>
+                Stop → Check → Verify → Then act.
+            </strong>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     DISCLAIMER
+========================================================= -->
+
+<section class="section">
+
+    <div class="alert">
+
+        <strong>Educational information:</strong>
+
+        <p>
+            PaisaGyaan is an educational project intended to improve
+            financial awareness. Information on this page is not a
+            substitute for official guidance from your bank,
+            payment provider, government authority or cybersecurity
+            professional.
+        </p>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div>
+
+                <h3>PaisaGyaan</h3>
+
+                <p>
+                    Financial literacy for everyday decisions.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h4>Explore</h4>
+
+                <a href="/learn">Learn</a>
+                <a href="/investments">Investments</a>
+                <a href="/loans">Loans</a>
+
+            </div>
+
+
+            <div>
+
+                <h4>Stay Safe</h4>
+
+                <a href="/safety">Safety</a>
+                <a href="/scams">Scams</a>
+                <a href="/community">Community</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 PaisaGyaan. Educational project.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* =========================================================
+       SCAM SIMULATOR
+    ========================================================= */
+
+    function simulatorAnswer(choice) {
+
+        const result = document.getElementById("simResult");
+
+        result.style.display = "block";
+
+        if (choice === "safe") {
+
+            result.className = "sim-result good";
+
+            result.innerHTML = `
+                <strong>✅ Good call.</strong>
+
+                <p>
+                    Don't use the link in the unexpected message.
+                    Instead, open your bank's official app or website
+                    yourself and check whether there is actually
+                    an account issue.
+                </p>
+
+                <p><strong>Red flags you noticed:</strong></p>
+
+                <span class="red-flag">Urgency</span>
+                <span class="red-flag">Threat of account blocking</span>
+                <span class="red-flag">Unknown link</span>
+                <span class="red-flag">KYC pressure</span>
+            `;
+
+        } else if (choice === "click") {
+
+            result.className = "sim-result bad";
+
+            result.innerHTML = `
+                <strong>⚠️ Risky choice.</strong>
+
+                <p>
+                    Don't click unexpected banking links.
+                    The message uses urgency and fear to pressure
+                    you into acting before thinking.
+                </p>
+
+                <p>
+                    Open your bank's official app or type its official
+                    website address yourself instead.
+                </p>
+            `;
+
+        } else {
+
+            result.className = "sim-result bad";
+
+            result.innerHTML = `
+                <strong>⚠️ Better not to engage.</strong>
+
+                <p>
+                    Replying can confirm that your number is active
+                    and keeps you engaged with the scammer.
+                </p>
+
+                <p>
+                    Instead, independently verify the issue using
+                    the organisation's official channels.
+                </p>
+            `;
+        }
+    }
+
+
+    /* =========================================================
+       PASSWORD STRENGTH DEMO
+    ========================================================= */
+
+    function checkPasswordStrength() {
+
+        const password =
+            document.getElementById("passwordDemo").value;
+
+        const fill =
+            document.getElementById("strengthFill");
+
+        const text =
+            document.getElementById("strengthText");
+
+        let score = 0;
+
+        if (password.length >= 8) {
+            score++;
+        }
+
+        if (password.length >= 12) {
+            score++;
+        }
+
+        if (/[A-Z]/.test(password)) {
+            score++;
+        }
+
+        if (/[a-z]/.test(password)) {
+            score++;
+        }
+
+        if (/[0-9]/.test(password)) {
+            score++;
+        }
+
+        if (/[^A-Za-z0-9]/.test(password)) {
+            score++;
+        }
+
+
+        if (password.length === 0) {
+
+            fill.style.width = "0%";
+
+            text.textContent =
+                "Enter a sample password to check its characteristics.";
+
+        } else if (score <= 2) {
+
+            fill.style.width = "30%";
+
+            text.textContent =
+                "Weak — make it longer and less predictable.";
+
+        } else if (score <= 4) {
+
+            fill.style.width = "60%";
+
+            text.textContent =
+                "Moderate — consider making it longer and unique.";
+
+        } else {
+
+            fill.style.width = "90%";
+
+            text.textContent =
+                "Stronger characteristics — still use a unique password and MFA where available.";
+
+        }
+    }
+
+
+    /* =========================================================
+       SIMPLE REVEAL ANIMATION
+    ========================================================= */
+
+    const revealElements =
+        document.querySelectorAll(
+            ".safety-card, .rule, .simulator, .emergency-card"
+        );
+
+    const revealObserver =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.style.opacity = "1";
+                        entry.target.style.transform = "translateY(0)";
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.08
+            }
+        );
+
+
+    revealElements.forEach(element => {
+
+        element.style.opacity = "0";
+        element.style.transform = "translateY(18px)";
+        element.style.transition =
+            "opacity 0.5s ease, transform 0.5s ease";
+
+        revealObserver.observe(element);
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scam Awareness | PaisaGyaan</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* =========================================================
+           SCAMS PAGE
+        ========================================================= */
+
+        .scam-intro {
+            max-width: 850px;
+        }
+
+        .scam-warning {
+            margin: 30px 0;
+            padding: 25px;
+            background: #fff4f2;
+            border: 1px solid #f0c5be;
+            border-left: 5px solid #d9534f;
+            border-radius: var(--radius-md);
+        }
+
+        .scam-warning h3 {
+            color: #a93226;
+            margin-top: 0;
+        }
+
+        .scam-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .scam-nav a {
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            background: white;
+            transition: 0.2s ease;
+        }
+
+        .scam-nav a:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Scam cards */
+
+        .scam-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        .scam-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            transition: 0.25s ease;
+        }
+
+        .scam-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .scam-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f2f8f4;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .risk-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: #fff0ed;
+            color: #a93226;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .scam-card ul {
+            padding-left: 20px;
+        }
+
+        .scam-card li {
+            margin-bottom: 8px;
+        }
+
+        /* Interactive scenarios */
+
+        .scenario-container {
+            margin-top: 35px;
+        }
+
+        .scenario {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .scenario-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .scenario h3 {
+            margin-top: 5px;
+        }
+
+        .chat-message {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f7f7f5;
+            border-radius: 14px;
+            line-height: 1.7;
+        }
+
+        .chat-message strong {
+            color: var(--primary);
+        }
+
+        .scenario-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .scenario-btn {
+            padding: 12px 17px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text);
+            transition: 0.2s ease;
+        }
+
+        .scenario-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .scenario-result {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 14px;
+            line-height: 1.7;
+        }
+
+        .scenario-result.correct {
+            display: block;
+            background: #edf9f1;
+            border: 1px solid #b9dfc6;
+        }
+
+        .scenario-result.wrong {
+            display: block;
+            background: #fff2ef;
+            border: 1px solid #edc0b8;
+        }
+
+        .red-flags {
+            margin-top: 15px;
+        }
+
+        .red-flag {
+            display: inline-block;
+            padding: 6px 10px;
+            margin: 4px 4px 4px 0;
+            background: #fff0ed;
+            color: #a93226;
+            border-radius: 999px;
+            font-size: 0.78rem;
+        }
+
+        /* Score */
+
+        .score-box {
+            display: none;
+            margin-top: 30px;
+            padding: 35px;
+            text-align: center;
+            background: #f3faf6;
+            border: 1px solid #c4e2cf;
+            border-radius: var(--radius-lg);
+        }
+
+        .score-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        /* Red flag framework */
+
+        .framework {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 25px;
+        }
+
+        .framework-item {
+            padding: 22px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .framework-letter {
+            display: inline-flex;
+            width: 38px;
+            height: 38px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #edf7f1;
+            color: var(--primary);
+            font-weight: 800;
+            margin-right: 8px;
+        }
+
+        /* Reporting */
+
+        .reporting {
+            margin-top: 35px;
+            padding: 30px;
+            background: #fff8ec;
+            border: 1px solid #ecd4ad;
+            border-radius: var(--radius-lg);
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .report-card {
+            padding: 20px;
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #ead9be;
+        }
+
+        .report-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 8px 0;
+        }
+
+        /* Quiz */
+
+        .final-quiz {
+            background: #f7faf8;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+        }
+
+        .quiz-question {
+            margin-bottom: 25px;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 9px 0;
+            padding: 13px 15px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+        }
+
+        .quiz-result {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            .scam-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .report-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .framework {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .scam-grid,
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scenario,
+            .final-quiz {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <div class="container nav-container">
+
+        <a href="/" class="logo">
+            Paisa<span>Gyaan</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+            <a href="/learn">Learn</a>
+            <a href="/investments">Investments</a>
+            <a href="/loans">Loans</a>
+            <a href="/safety">Safety</a>
+            <a href="/scams" class="active">Scams</a>
+            <a href="/community">Community</a>
+            <a href="/login">Login</a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<header class="page-hero">
+
+    <div class="container">
+
+        <span class="eyebrow">SCAM AWARENESS</span>
+
+        <h1>
+            Don't just know scams.<br>
+            Learn to spot them.
+        </h1>
+
+        <p class="scam-intro">
+            Scams are designed to make you react before you think.
+            Learn the common patterns, identify red flags and test
+            yourself with realistic situations.
+        </p>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- =========================================================
+     NAV
+========================================================= -->
+
+<div class="scam-nav">
+
+    <a href="#common">Common Scams</a>
+    <a href="#scenarios">Scam Simulator</a>
+    <a href="#redflags">Red Flags</a>
+    <a href="#report">What To Do</a>
+    <a href="#quiz">Final Quiz</a>
+
+</div>
+
+
+<!-- =========================================================
+     WARNING
+========================================================= -->
+
+<div class="scam-warning">
+
+    <h3>🚨 One thing almost every scam has in common</h3>
+
+    <p>
+        The scammer wants you to make a decision quickly:
+        <strong>pay, click, share, install, transfer or reveal.</strong>
+    </p>
+
+    <p>
+        When something involves your money or sensitive information,
+        slowing down is a security habit — not a weakness.
+    </p>
+
+</div>
+
+
+<!-- =========================================================
+     COMMON SCAMS
+========================================================= -->
+
+<section class="section" id="common">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">01 · KNOW THE PATTERNS</span>
+
+        <h2>Common financial scams</h2>
+
+        <p>
+            Scammers change their stories constantly, but many of
+            their techniques follow familiar patterns.
+        </p>
+
+    </div>
+
+
+    <div class="scam-grid">
+
+
+        <!-- KYC -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">🏦</div>
+
+            <span class="risk-tag">BANKING</span>
+
+            <h3>Fake KYC scam</h3>
+
+            <p>
+                You receive a message claiming that your bank account
+                or wallet will be blocked unless you update KYC.
+            </p>
+
+            <ul>
+                <li>Urgent deadline</li>
+                <li>Suspicious link</li>
+                <li>Request for personal details</li>
+                <li>Threat of account suspension</li>
+            </ul>
+
+        </article>
+
+
+        <!-- UPI -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">📲</div>
+
+            <span class="risk-tag">UPI</span>
+
+            <h3>Fake UPI payment</h3>
+
+            <p>
+                Someone claims they are sending you money but asks
+                you to enter your UPI PIN or approve a payment.
+            </p>
+
+            <ul>
+                <li>“Enter PIN to receive money”</li>
+                <li>Unknown collect request</li>
+                <li>Pressure to act quickly</li>
+            </ul>
+
+        </article>
+
+
+        <!-- INVESTMENT -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">📈</div>
+
+            <span class="risk-tag">INVESTMENT</span>
+
+            <h3>Fake investment adviser</h3>
+
+            <p>
+                A person promises unusually high or guaranteed returns
+                and asks you to transfer money to a personal account.
+            </p>
+
+            <ul>
+                <li>Guaranteed returns</li>
+                <li>Fake screenshots</li>
+                <li>Limited-time opportunity</li>
+                <li>Pressure to invest more</li>
+            </ul>
+
+        </article>
+
+
+        <!-- JOB -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">💼</div>
+
+            <span class="risk-tag">JOB</span>
+
+            <h3>Fake job scam</h3>
+
+            <p>
+                You are offered a job but asked to pay registration,
+                training, verification or security fees.
+            </p>
+
+            <ul>
+                <li>Unsolicited job offer</li>
+                <li>Upfront payment</li>
+                <li>Unrealistic salary</li>
+                <li>Pressure to transfer money</li>
+            </ul>
+
+        </article>
+
+
+        <!-- DELIVERY -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">📦</div>
+
+            <span class="risk-tag">DELIVERY</span>
+
+            <h3>Parcel / customs scam</h3>
+
+            <p>
+                A caller claims that a parcel linked to you contains
+                illegal items and demands money to “resolve” it.
+            </p>
+
+            <ul>
+                <li>Fear and intimidation</li>
+                <li>Fake officials</li>
+                <li>Immediate payment demand</li>
+            </ul>
+
+        </article>
+
+
+        <!-- LOAN -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">💳</div>
+
+            <span class="risk-tag">LOAN</span>
+
+            <h3>Fake loan app</h3>
+
+            <p>
+                A person or app offers an instant loan and may demand
+                fees or excessive permissions.
+            </p>
+
+            <ul>
+                <li>Upfront processing fee</li>
+                <li>Unknown application</li>
+                <li>Unnecessary permissions</li>
+                <li>Threatening recovery tactics</li>
+            </ul>
+
+        </article>
+
+
+        <!-- SCREEN SHARING -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">🖥️</div>
+
+            <span class="risk-tag">DEVICE</span>
+
+            <h3>Remote-access scam</h3>
+
+            <p>
+                Someone asks you to install an app or share your screen
+                to receive a refund or fix an account problem.
+            </p>
+
+            <ul>
+                <li>Remote-control request</li>
+                <li>Screen-sharing request</li>
+                <li>Banking activity during the call</li>
+            </ul>
+
+        </article>
+
+
+        <!-- SOCIAL MEDIA -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">📱</div>
+
+            <span class="risk-tag">SOCIAL MEDIA</span>
+
+            <h3>Fake social-media support</h3>
+
+            <p>
+                A fake account pretends to represent a bank,
+                company or payment service and asks for account details.
+            </p>
+
+            <ul>
+                <li>Unofficial account</li>
+                <li>Direct-message support</li>
+                <li>Request for OTP or credentials</li>
+            </ul>
+
+        </article>
+
+
+        <!-- IPO -->
+
+        <article class="scam-card">
+
+            <div class="scam-icon">🧾</div>
+
+            <span class="risk-tag">MARKET</span>
+
+            <h3>Fake IPO / trading opportunity</h3>
+
+            <p>
+                Fraudsters may create fake trading platforms,
+                fake profit screenshots or fake investment groups.
+            </p>
+
+            <ul>
+                <li>Guaranteed profit claims</li>
+                <li>Fake trading dashboard</li>
+                <li>Telegram/WhatsApp pressure</li>
+                <li>Withdrawal problems</li>
+            </ul>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SCAM SIMULATOR
+========================================================= -->
+
+<section class="section" id="scenarios">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">02 · TEST YOURSELF</span>
+
+        <h2>Scam simulator</h2>
+
+        <p>
+            Don't guess based on the story. Look for the behaviour
+            behind the story.
+        </p>
+
+    </div>
+
+
+    <div class="scenario-container">
+
+
+        <!-- SCENARIO 1 -->
+
+        <div class="scenario">
+
+            <span class="scenario-number">
+                SCENARIO 1
+            </span>
+
+            <h3>
+                “Your KYC will expire today.”
+            </h3>
+
+            <div class="chat-message">
+
+                <strong>SMS:</strong>
+
+                <br><br>
+
+                “Dear Customer, your bank account KYC has expired.
+                Your account will be blocked today. Verify immediately
+                using this link: bank-verify-example.com”
+
+            </div>
+
+            <p>
+                What is the safest response?
+            </p>
+
+            <div class="scenario-options">
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(1, 'wrong')">
+
+                    Click the link and update KYC
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(1, 'correct')">
+
+                    Open the official banking app/website independently
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(1, 'wrong')">
+
+                    Reply to the SMS and ask for confirmation
+
+                </button>
+
+            </div>
+
+            <div id="result1" class="scenario-result"></div>
+
+        </div>
+
+
+        <!-- SCENARIO 2 -->
+
+        <div class="scenario">
+
+            <span class="scenario-number">
+                SCENARIO 2
+            </span>
+
+            <h3>
+                “I'm sending you ₹5,000.”
+            </h3>
+
+            <div class="chat-message">
+
+                <strong>WhatsApp:</strong>
+
+                <br><br>
+
+                “I accidentally sent you a payment request.
+                Just enter your UPI PIN to receive ₹5,000.
+                Do it quickly because the request expires.”
+
+            </div>
+
+            <p>
+                What should you do?
+            </p>
+
+            <div class="scenario-options">
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(2, 'wrong')">
+
+                    Enter UPI PIN
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(2, 'correct')">
+
+                    Stop and verify the transaction before approving anything
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(2, 'wrong')">
+
+                    Send ₹1 first to check
+
+                </button>
+
+            </div>
+
+            <div id="result2" class="scenario-result"></div>
+
+        </div>
+
+
+        <!-- SCENARIO 3 -->
+
+        <div class="scenario">
+
+            <span class="scenario-number">
+                SCENARIO 3
+            </span>
+
+            <h3>
+                “Guaranteed 30% return.”
+            </h3>
+
+            <div class="chat-message">
+
+                <strong>Telegram Group:</strong>
+
+                <br><br>
+
+                “Our private trading strategy gives guaranteed
+                30% monthly returns. Only 10 slots left.
+                Deposit ₹25,000 today to join.”
+
+            </div>
+
+            <p>
+                Which response shows the most caution?
+            </p>
+
+            <div class="scenario-options">
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(3, 'correct')">
+
+                    Don't transfer money based on guaranteed-return claims
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(3, 'wrong')">
+
+                    Invest quickly before the slots disappear
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(3, 'wrong')">
+
+                    Ask the group admin for a personal guarantee
+
+                </button>
+
+            </div>
+
+            <div id="result3" class="scenario-result"></div>
+
+        </div>
+
+
+        <!-- SCENARIO 4 -->
+
+        <div class="scenario">
+
+            <span class="scenario-number">
+                SCENARIO 4
+            </span>
+
+            <h3>
+                “We're from customer support.”
+            </h3>
+
+            <div class="chat-message">
+
+                <strong>Phone call:</strong>
+
+                <br><br>
+
+                “Your refund is pending. Please install this
+                screen-sharing application and open your banking app
+                so I can help process the refund.”
+
+            </div>
+
+            <p>
+                What should you do?
+            </p>
+
+            <div class="scenario-options">
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(4, 'wrong')">
+
+                    Install the app because they know my name
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(4, 'correct')">
+
+                    End the call and contact the company independently
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(4, 'wrong')">
+
+                    Share the screen but hide the OTP
+
+                </button>
+
+            </div>
+
+            <div id="result4" class="scenario-result"></div>
+
+        </div>
+
+
+        <!-- SCENARIO 5 -->
+
+        <div class="scenario">
+
+            <span class="scenario-number">
+                SCENARIO 5
+            </span>
+
+            <h3>
+                “Your parcel contains illegal items.”
+            </h3>
+
+            <div class="chat-message">
+
+                <strong>Phone call:</strong>
+
+                <br><br>
+
+                “We are calling from customs. A parcel in your name
+                contains illegal material. Pay ₹8,000 immediately
+                or police action will begin.”
+
+            </div>
+
+            <p>
+                What should you do?
+            </p>
+
+            <div class="scenario-options">
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(5, 'correct')">
+
+                    Don't panic; verify independently through official channels
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(5, 'wrong')">
+
+                    Pay immediately to avoid police action
+
+                </button>
+
+                <button
+                    class="scenario-btn"
+                    onclick="answerScenario(5, 'wrong')">
+
+                    Give them your Aadhaar and bank details
+
+                </button>
+
+            </div>
+
+            <div id="result5" class="scenario-result"></div>
+
+        </div>
+
+
+        <!-- SCORE -->
+
+        <div id="scamScore" class="score-box">
+
+            <h3>Your Scam Awareness Score</h3>
+
+            <div class="score-number">
+                <span id="scoreValue">0</span>/5
+            </div>
+
+            <p id="scoreMessage"></p>
+
+            <button
+                class="btn btn-primary"
+                onclick="resetScenarios()">
+
+                Try Again
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     RED FLAGS
+========================================================= -->
+
+<section class="section" id="redflags">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">03 · THE PATTERN</span>
+
+        <h2>Learn the red flags</h2>
+
+        <p>
+            A scam does not always look obviously fake. Multiple
+            small warning signs can be more useful than one clue.
+        </p>
+
+    </div>
+
+
+    <div class="framework">
+
+
+        <div class="framework-item">
+
+            <span class="framework-letter">U</span>
+
+            <strong>Urgency</strong>
+
+            <p>
+                “Do it now.” “Only 10 minutes left.”
+                “Your account will be blocked.”
+            </p>
+
+        </div>
+
+
+        <div class="framework-item">
+
+            <span class="framework-letter">F</span>
+
+            <strong>Fear</strong>
+
+            <p>
+                Threats of police action, account closure,
+                legal trouble or financial loss.
+            </p>
+
+        </div>
+
+
+        <div class="framework-item">
+
+            <span class="framework-letter">G</span>
+
+            <strong>Greed / unrealistic reward</strong>
+
+            <p>
+                Guaranteed profits, free money, unbelievable
+                discounts or rewards.
+            </p>
+
+        </div>
+
+
+        <div class="framework-item">
+
+            <span class="framework-letter">S</span>
+
+            <strong>Secret information</strong>
+
+            <p>
+                Requests for OTPs, PINs, passwords, CVVs or
+                other sensitive credentials.
+            </p>
+
+        </div>
+
+
+        <div class="framework-item">
+
+            <span class="framework-letter">P</span>
+
+            <strong>Pressure</strong>
+
+            <p>
+                The person tries to stop you from thinking,
+                asking others or independently verifying.
+            </p>
+
+        </div>
+
+
+        <div class="framework-item">
+
+            <span class="framework-letter">A</span>
+
+            <strong>Unusual action</strong>
+
+            <p>
+                Install an app, share your screen, scan a QR code,
+                transfer money or click an unexpected link.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     WHAT TO DO
+========================================================= -->
+
+<section class="section" id="report">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">04 · IF YOU SUSPECT FRAUD</span>
+
+        <h2>Stop. Secure. Report.</h2>
+
+        <p>
+            If you think you've been scammed, don't spend time
+            blaming yourself. Focus on reducing further damage.
+        </p>
+
+    </div>
+
+
+    <div class="scam-grid">
+
+        <article class="scam-card">
+
+            <div class="scam-icon">🛑</div>
+
+            <h3>1. Stop</h3>
+
+            <p>
+                Stop communicating with the suspected scammer and
+                don't make additional payments.
+            </p>
+
+        </article>
+
+
+        <article class="scam-card">
+
+            <div class="scam-icon">🔐</div>
+
+            <h3>2. Secure</h3>
+
+            <p>
+                Contact your bank/payment provider through official
+                channels and secure affected accounts.
+            </p>
+
+        </article>
+
+
+        <article class="scam-card">
+
+            <div class="scam-icon">📢</div>
+
+            <h3>3. Report</h3>
+
+            <p>
+                Report suspected cyber financial fraud promptly
+                through appropriate official reporting channels.
+            </p>
+
+        </article>
+
+    </div>
+
+
+    <div class="reporting">
+
+        <h3>🇮🇳 Cyber fraud reporting</h3>
+
+        <p>
+            In India, suspected cyber financial fraud can be reported
+            through the national cybercrime reporting mechanisms.
+        </p>
+
+
+        <div class="report-grid">
+
+            <div class="report-card">
+
+                <strong>Cyber fraud helpline</strong>
+
+                <div class="report-number">
+                    1930
+                </div>
+
+                <p>
+                    Keep this number in mind if you need to report
+                    suspected cyber financial fraud.
+                </p>
+
+            </div>
+
+
+            <div class="report-card">
+
+                <strong>Online reporting</strong>
+
+                <div class="report-number">
+                    🌐
+                </div>
+
+                <p>
+                    Use the National Cyber Crime Reporting Portal
+                    for online complaints.
+                </p>
+
+            </div>
+
+
+            <div class="report-card">
+
+                <strong>Financial institution</strong>
+
+                <div class="report-number">
+                    🏦
+                </div>
+
+                <p>
+                    Contact your bank or payment provider using
+                    independently verified official contact details.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FINAL QUIZ
+========================================================= -->
+
+<section class="section" id="quiz">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">05 · FINAL CHECK</span>
+
+        <h2>Can you spot the scam?</h2>
+
+        <p>
+            One final question. Think before choosing.
+        </p>
+
+    </div>
+
+
+    <div class="final-quiz">
+
+        <div class="quiz-question">
+
+            <h3>
+                Someone calls saying they are from your bank.
+                They know your name and the last four digits of
+                your card. They ask for your OTP to “cancel a
+                fraudulent transaction.” What should you do?
+            </h3>
+
+
+            <label class="quiz-option">
+
+                <input
+                    type="radio"
+                    name="finalQuiz"
+                    value="wrong">
+
+                Give the OTP because they know my details.
+
+            </label>
+
+
+            <label class="quiz-option">
+
+                <input
+                    type="radio"
+                    name="finalQuiz"
+                    value="correct">
+
+                End the call and contact the bank through an
+                independently verified official channel.
+
+            </label>
+
+
+            <label class="quiz-option">
+
+                <input
+                    type="radio"
+                    name="finalQuiz"
+                    value="wrong">
+
+                Ask them to send another OTP.
+
+            </label>
+
+
+            <button
+                class="btn btn-primary"
+                onclick="checkFinalQuiz()">
+
+                Check Answer
+
+            </button>
+
+
+            <div id="quizResult" class="quiz-result"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     DISCLAIMER
+========================================================= -->
+
+<section class="section">
+
+    <div class="alert">
+
+        <strong>Educational information:</strong>
+
+        <p>
+            PaisaGyaan is an educational financial-literacy project.
+            Scam examples are fictional learning scenarios. Always
+            verify current reporting procedures and contact details
+            through official sources.
+        </p>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div>
+
+                <h3>PaisaGyaan</h3>
+
+                <p>
+                    Financial literacy for everyday decisions.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h4>Learn</h4>
+
+                <a href="/learn">Financial Basics</a>
+                <a href="/investments">Investments</a>
+                <a href="/loans">Loans</a>
+
+            </div>
+
+
+            <div>
+
+                <h4>Protect</h4>
+
+                <a href="/safety">Safety</a>
+                <a href="/scams">Scam Awareness</a>
+                <a href="/community">Community</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 PaisaGyaan. Educational project.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* =========================================================
+       SCAM SIMULATOR
+    ========================================================= */
+
+    let scamScore = 0;
+
+    const answeredScenarios = {
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false
+    };
+
+
+    function answerScenario(number, result) {
+
+        const box =
+            document.getElementById("result" + number);
+
+        if (answeredScenarios[number]) {
+            return;
+        }
+
+        answeredScenarios[number] = true;
+
+
+        if (result === "correct") {
+
+            scamScore++;
+
+            box.className =
+                "scenario-result correct";
+
+            box.innerHTML = `
+
+                <strong>✅ Good decision.</strong>
+
+                <p>
+                    The safest approach is to stop and independently
+                    verify the situation before taking financial action.
+                </p>
+
+                <div class="red-flags">
+
+                    <span class="red-flag">
+                        Don't trust unexpected links
+                    </span>
+
+                    <span class="red-flag">
+                        Don't react to urgency
+                    </span>
+
+                    <span class="red-flag">
+                        Verify independently
+                    </span>
+
+                </div>
+            `;
+
+        } else {
+
+            box.className =
+                "scenario-result wrong";
+
+            box.innerHTML = `
+
+                <strong>⚠️ Risky choice.</strong>
+
+                <p>
+                    This is the type of action scammers want victims
+                    to take before they have time to verify the story.
+                </p>
+
+                <div class="red-flags">
+
+                    <span class="red-flag">
+                        Pause
+                    </span>
+
+                    <span class="red-flag">
+                        Verify
+                    </span>
+
+                    <span class="red-flag">
+                        Don't share secrets
+                    </span>
+
+                </div>
+            `;
+        }
+
+
+        updateScore();
+    }
+
+
+    function updateScore() {
+
+        const totalAnswered =
+            Object.values(answeredScenarios)
+                  .filter(value => value === true)
+                  .length;
+
+
+        if (totalAnswered === 5) {
+
+            const scoreBox =
+                document.getElementById("scamScore");
+
+            const scoreValue =
+                document.getElementById("scoreValue");
+
+            const scoreMessage =
+                document.getElementById("scoreMessage");
+
+
+            scoreBox.style.display = "block";
+
+            scoreValue.textContent = scamScore;
+
+
+            if (scamScore === 5) {
+
+                scoreMessage.textContent =
+                    "Excellent! You consistently looked for pressure, urgency and unusual requests.";
+
+            } else if (scamScore >= 3) {
+
+                scoreMessage.textContent =
+                    "Good awareness. Keep practising the habit of pausing and verifying.";
+
+            } else {
+
+                scoreMessage.textContent =
+                    "This is exactly why scam awareness matters. Learn the red flags and try again.";
+            }
+
+            scoreBox.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+    }
+
+
+    function resetScenarios() {
+
+        scamScore = 0;
+
+        for (let key in answeredScenarios) {
+            answeredScenarios[key] = false;
+        }
+
+
+        for (let i = 1; i <= 5; i++) {
+
+            const result =
+                document.getElementById("result" + i);
+
+            result.style.display = "none";
+            result.innerHTML = "";
+            result.className = "scenario-result";
+        }
+
+
+        document.getElementById("scamScore").style.display =
+            "none";
+
+
+        window.scrollTo({
+            top: document.getElementById("scenarios").offsetTop - 80,
+            behavior: "smooth"
+        });
+    }
+
+
+    /* =========================================================
+       FINAL QUIZ
+    ========================================================= */
+
+    function checkFinalQuiz() {
+
+        const selected =
+            document.querySelector(
+                'input[name="finalQuiz"]:checked'
+            );
+
+        const result =
+            document.getElementById("quizResult");
+
+
+        if (!selected) {
+
+            result.style.display = "block";
+
+            result.style.background = "#fff7e6";
+
+            result.style.border =
+                "1px solid #ecd49c";
+
+            result.innerHTML =
+                "<strong>Please select an answer first.</strong>";
+
+            return;
+        }
+
+
+        result.style.display = "block";
+
+
+        if (selected.value === "correct") {
+
+            result.style.background = "#edf9f1";
+
+            result.style.border =
+                "1px solid #b9dfc6";
+
+            result.innerHTML = `
+
+                <strong>✅ Correct.</strong>
+
+                <p>
+                    Knowing some information about you does not prove
+                    that the caller is legitimate. Never reveal an OTP
+                    to an unexpected caller. End the call and contact
+                    the bank independently.
+                </p>
+
+            `;
+
+        } else {
+
+            result.style.background = "#fff2ef";
+
+            result.style.border =
+                "1px solid #edc0b8";
+
+            result.innerHTML = `
+
+                <strong>⚠️ That's risky.</strong>
+
+                <p>
+                    An OTP is an authentication credential. Don't give
+                    it to an unexpected caller. Verify the situation
+                    independently through the bank's official channel.
+                </p>
+
+            `;
+        }
+    }
+
+
+    /* =========================================================
+       REVEAL ANIMATION
+    ========================================================= */
+
+    const revealElements =
+        document.querySelectorAll(
+            ".scam-card, .scenario, .framework-item, .report-card"
+        );
+
+
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.style.opacity = "1";
+
+                        entry.target.style.transform =
+                            "translateY(0)";
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.08
+            }
+        );
+
+
+    revealElements.forEach(element => {
+
+        element.style.opacity = "0";
+
+        element.style.transform =
+            "translateY(18px)";
+
+        element.style.transition =
+            "opacity 0.5s ease, transform 0.5s ease";
+
+        observer.observe(element);
+
+    });
+
+</script>
+
+</body>
+</html>

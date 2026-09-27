@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="PaisaGyaan - Learn, understand and manage your money."
+    >
+
+    <title>PaisaGyaan | Understand Your Money</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="{{ url_for('home') }}" class="logo">
+
+            <span class="logo-mark">₹</span>
+
+            <span>Paisa<span>Gyaan</span></span>
+
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('home') }}" class="active">
+                Home
+            </a>
+
+            <a href="/learn">
+                Learn
+            </a>
+
+            <a href="/investments">
+                Investments
+            </a>
+
+            <a href="/loans">
+                Loans
+            </a>
+
+            <a href="/safety">
+                Safety
+            </a>
+
+            <a href="/scams">
+                Scams
+            </a>
+
+            <a href="/community">
+                Community
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="/login"
+                class="btn btn-outline"
+            >
+                Login
+            </a>
+
+            <a
+                href="/register"
+                class="btn btn-primary"
+            >
+                Get Started
+            </a>
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
+<main>
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                💡 Financial awareness for everyone
+            </div>
+
+
+            <h1>
+
+                Your money.
+                <span class="highlight">
+                    Your knowledge.
+                </span>
+
+                Your decisions.
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                PaisaGyaan is a financial-literacy platform
+                designed to help you understand saving,
+                investing, loans, taxes, digital payments,
+                financial safety and more — from the basics
+                to advanced concepts.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+                <a
+                    href="/learn"
+                    class="btn btn-primary"
+                >
+                    Start Learning →
+                </a>
+
+                <a
+                    href="#explore"
+                    class="btn btn-secondary"
+                >
+                    Explore PaisaGyaan
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     EXPLORE
+     ===================================================== -->
+
+<section
+    class="section"
+    id="explore"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                Explore
+            </span>
+
+            <h2>
+                Everything you need to understand money.
+            </h2>
+
+            <p>
+                No complicated financial jargon.
+                No assumptions that you already know everything.
+                Start wherever you are.
+            </p>
+
+        </div>
+
+
+        <div class="card-grid">
+
+
+            <article class="feature-card reveal">
+
+                <div class="feature-icon">
+                    📚
+                </div>
+
+                <h3>
+                    Learn
+                </h3>
+
+                <p>
+                    Build your financial knowledge step by step —
+                    from budgeting and banking to taxes,
+                    insurance and retirement planning.
+                </p>
+
+                <br>
+
+                <a
+                    href="/learn"
+                    class="btn btn-secondary"
+                >
+                    Learn →
+                </a>
+
+            </article>
+
+
+
+            <article class="feature-card reveal">
+
+                <div class="feature-icon">
+                    📈
+                </div>
+
+                <h3>
+                    Investments
+                </h3>
+
+                <p>
+                    Understand risk, return, compounding,
+                    mutual funds, stocks, bonds, ETFs,
+                    SIPs and other investment concepts.
+                </p>
+
+                <br>
+
+                <a
+                    href="/investments"
+                    class="btn btn-secondary"
+                >
+                    Explore →
+                </a>
+
+            </article>
+
+
+
+            <article class="feature-card reveal">
+
+                <div class="feature-icon">
+                    💳
+                </div>
+
+                <h3>
+                    Loans & Credit
+                </h3>
+
+                <p>
+                    Understand EMIs, interest, credit scores,
+                    different types of loans and how borrowing
+                    can affect your finances.
+                </p>
+
+                <br>
+
+                <a
+                    href="/loans"
+                    class="btn btn-secondary"
+                >
+                    Understand →
+                </a>
+
+            </article>
+
+
+
+            <article class="feature-card reveal">
+
+                <div class="feature-icon">
+                    🛡️
+                </div>
+
+                <h3>
+                    Financial Safety
+                </h3>
+
+                <p>
+                    Learn how to protect your bank accounts,
+                    UPI payments, cards, passwords and
+                    personal financial information.
+                </p>
+
+                <br>
+
+                <a
+                    href="/safety"
+                    class="btn btn-secondary"
+                >
+                    Stay Safe →
+                </a>
+
+            </article>
+
+
+
+            <article class="feature-card reveal">
+
+                <div class="feature-icon">
+                    🚨
+                </div>
+
+                <h3>
+                    Scam Awareness
+                </h3>
+
+                <p>
+                    Learn to recognize phishing, fake investment
+                    schemes, UPI frauds, fake loan apps,
+                    job scams and other financial traps.
+                </p>
+
+                <br>
+
+                <a
+                    href="/scams"
+                    class="btn btn-secondary"
+                >
+                    Spot Scams →
+                </a>
+
+            </article>
+
+
+
+            <article class="feature-card reveal">
+
+                <div class="feature-icon">
+                    👥
+                </div>
+
+                <h3>
+                    Community
+                </h3>
+
+                <p>
+                    Discuss financial-literacy topics,
+                    ask questions and learn from other
+                    users in a responsible environment.
+                </p>
+
+                <br>
+
+                <a
+                    href="/community"
+                    class="btn btn-secondary"
+                >
+                    Join →
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     LEARNING JOURNEY
+     ===================================================== -->
+
+<section class="section section-soft">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                Your Journey
+            </span>
+
+            <h2>
+                From “I know nothing about money”
+                to “I understand what I'm doing.”
+            </h2>
+
+            <p>
+                Financial literacy isn't about becoming a
+                finance expert overnight. It's about making
+                better-informed decisions one concept at a time.
+            </p>
+
+        </div>
+
+
+        <div class="learning-path">
+
+
+            <div class="learning-step reveal">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Understand
+                </h3>
+
+                <p>
+                    Learn the basic language of money,
+                    banking, saving and budgeting.
+                </p>
+
+            </div>
+
+
+
+            <div class="learning-step reveal">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Explore
+                </h3>
+
+                <p>
+                    Discover investments, loans, insurance,
+                    taxes and digital finance.
+                </p>
+
+            </div>
+
+
+
+            <div class="learning-step reveal">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    Protect
+                </h3>
+
+                <p>
+                    Recognize scams and learn how to
+                    protect your financial information.
+                </p>
+
+            </div>
+
+
+
+            <div class="learning-step reveal">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <h3>
+                    Apply
+                </h3>
+
+                <p>
+                    Track your money, set goals and use
+                    calculators to understand financial decisions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     WHY PAISAGYAAN
+     ===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                Why it matters
+            </span>
+
+            <h2>
+                Financial literacy is a life skill.
+            </h2>
+
+            <p>
+                You don't need to be rich to understand money.
+                In fact, understanding money is one of the
+                ways people can become more intentional about
+                the money they already have.
+            </p>
+
+        </div>
+
+
+        <div class="stats-grid">
+
+            <div class="stat-card reveal">
+
+                <span class="stat-value">
+                    ₹
+                </span>
+
+                <span class="stat-label">
+                    Understand your money
+                </span>
+
+            </div>
+
+
+            <div class="stat-card reveal">
+
+                <span class="stat-value">
+                    %
+                </span>
+
+                <span class="stat-label">
+                    Understand interest & returns
+                </span>
+
+            </div>
+
+
+            <div class="stat-card reveal">
+
+                <span class="stat-value">
+                    🛡
+                </span>
+
+                <span class="stat-label">
+                    Recognize financial risks
+                </span>
+
+            </div>
+
+
+            <div class="stat-card reveal">
+
+                <span class="stat-value">
+                    🧠
+                </span>
+
+                <span class="stat-label">
+                    Make informed decisions
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CTA
+     ===================================================== -->
+
+<section class="section section-soft">
+
+    <div class="container">
+
+        <div
+            class="feature-card"
+            style="text-align: center; padding: 55px 30px;"
+        >
+
+            <div class="feature-icon"
+                 style="margin: 0 auto 20px;">
+                🌱
+            </div>
+
+            <h2 style="font-size: 2rem; margin-bottom: 12px;">
+                Start with one concept today.
+            </h2>
+
+            <p
+                style="
+                    max-width: 620px;
+                    margin: 0 auto 25px;
+                    color: var(--text-light);
+                "
+            >
+                You don't have to understand everything
+                at once. Start learning, ask questions,
+                explore and gradually build your financial
+                confidence.
+            </p>
+
+            <a
+                href="/learn"
+                class="btn btn-primary"
+            >
+                Begin Your Journey →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+
+            <div class="footer-brand">
+
+                <h2>
+                    PaisaGyaan 💰
+                </h2>
+
+                <p>
+                    Learn money. Understand money.
+                    Protect money. Make informed decisions.
+                </p>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Learn
+                </h4>
+
+                <a href="/learn">
+                    Financial Basics
+                </a>
+
+                <a href="/investments">
+                    Investments
+                </a>
+
+                <a href="/loans">
+                    Loans & Credit
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Protect
+                </h4>
+
+                <a href="/safety">
+                    Financial Safety
+                </a>
+
+                <a href="/scams">
+                    Scam Awareness
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h4>
+                    PaisaGyaan
+                </h4>
+
+                <a href="/community">
+                    Community
+                </a>
+
+                <a href="/login">
+                    Login
+                </a>
+
+                <a href="/register">
+                    Register
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 PaisaGyaan.
+            Built for financial awareness and education.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script>
+
+    /*
+     * Scroll reveal animation
+     */
+
+    const revealElements =
+        document.querySelectorAll(".reveal");
+
+
+    const revealObserver =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach((entry) => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("visible");
+
+                        revealObserver.unobserve(
+                            entry.target
+                        );
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+
+    revealElements.forEach((element) => {
+
+        revealObserver.observe(element);
+
+    });
+
+
+    /*
+     * Mobile menu placeholder
+     *
+     * We'll build the complete responsive menu
+     * when the navigation system is finalized.
+     */
+
+    const menuToggle =
+        document.getElementById("menuToggle");
+
+
+    if (menuToggle) {
+
+        menuToggle.addEventListener(
+            "click",
+            () => {
+
+                alert(
+                    "Mobile navigation will be available soon."
+                );
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

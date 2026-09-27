@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Financial Tracker | PaisaGyaan</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <style>
+
+        /* =========================================================
+           TRACKER PAGE
+        ========================================================= */
+
+        .tracker-page {
+            min-height: calc(100vh - 80px);
+            padding: 45px 0 70px;
+            background: #f7faf8;
+        }
+
+
+        .tracker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+
+        .tracker-header h1 {
+            font-size: 2.3rem;
+            margin-bottom: 7px;
+        }
+
+
+        .tracker-header p {
+            color: var(--text-light);
+            margin: 0;
+        }
+
+
+        /* =========================================================
+           SUMMARY CARDS
+        ========================================================= */
+
+        .tracker-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+
+        .summary-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+
+        .summary-label {
+            color: var(--text-light);
+            font-size: 0.78rem;
+            margin-bottom: 8px;
+        }
+
+
+        .summary-value {
+            font-size: 1.45rem;
+            font-weight: 900;
+        }
+
+
+        .summary-icon {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+
+        /* =========================================================
+           TRACKER GRID
+        ========================================================= */
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+
+        .tracker-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+
+        .tracker-card h2 {
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+        }
+
+
+        .tracker-card-description {
+            color: var(--text-light);
+            font-size: 0.78rem;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+
+        .tracker-input,
+        .tracker-select,
+        .tracker-textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 13px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            font-family: inherit;
+            background: white;
+            outline: none;
+        }
+
+
+        .tracker-input:focus,
+        .tracker-select:focus,
+        .tracker-textarea:focus {
+            border-color: var(--primary);
+            box-shadow:
+                0 0 0 3px
+                rgba(42,111,73,0.08);
+        }
+
+
+        .tracker-textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+
+        .type-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px;
+        }
+
+
+        .type-button {
+            padding: 10px 6px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+
+        .type-button.active {
+            background: #eaf6ee;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+
+        .add-button {
+            width: 100%;
+            margin-top: 4px;
+        }
+
+
+        /* =========================================================
+           TRANSACTIONS
+        ========================================================= */
+
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+
+        .transaction-count {
+            padding: 5px 9px;
+            background: #edf7f0;
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+
+        .transaction-list {
+            display: grid;
+            gap: 9px;
+        }
+
+
+        .transaction-item {
+            display: grid;
+            grid-template-columns: 42px 1fr auto;
+            gap: 12px;
+            align-items: center;
+            padding: 13px;
+            border: 1px solid #edf0ee;
+            border-radius: 11px;
+        }
+
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #f2f7f3;
+        }
+
+
+        .transaction-name {
+            font-weight: 800;
+            font-size: 0.84rem;
+        }
+
+
+        .transaction-meta {
+            color: var(--text-light);
+            font-size: 0.72rem;
+            margin-top: 3px;
+        }
+
+
+        .transaction-amount {
+            font-weight: 900;
+            font-size: 0.86rem;
+        }
+
+
+        .income {
+            color: #2e7848;
+        }
+
+
+        .expense {
+            color: #a74343;
+        }
+
+
+        .investment {
+            color: #5b5c98;
+        }
+
+
+        .empty-transactions {
+            text-align: center;
+            padding: 45px 15px;
+            color: var(--text-light);
+        }
+
+
+        .empty-transactions-icon {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================================================
+           GOALS
+        ========================================================= */
+
+        .goals-section {
+            margin-top: 22px;
+        }
+
+
+        .goal-card {
+            padding: 17px;
+            border: 1px solid #edf0ee;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+
+        .goal-name {
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+
+
+        .goal-percent {
+            font-size: 0.76rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+
+        .goal-progress {
+            height: 7px;
+            background: #e7ece9;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+
+        .goal-progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 20px;
+        }
+
+
+        .goal-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 7px;
+            color: var(--text-light);
+            font-size: 0.7rem;
+        }
+
+
+        /* =========================================================
+           GOAL FORM
+        ========================================================= */
+
+        .goal-form {
+            margin-top: 15px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1050px) {
+
+            .tracker-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tracker-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .tracker-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .tracker-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .tracker-header h1 {
+                font-size: 1.9rem;
+            }
+
+            .transaction-item {
+                grid-template-columns: 40px 1fr;
+            }
+
+            .transaction-amount {
+                grid-column: 2;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <div class="container nav-container">
+
+        <a href="/" class="logo">
+            Paisa<span>Gyaan</span>
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/learn">
+                Learn
+            </a>
+
+            <a href="/investments">
+                Investments
+            </a>
+
+            <a href="/loans">
+                Loans
+            </a>
+
+            <a href="/safety">
+                Safety
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     TRACKER
+========================================================= -->
+
+<main class="tracker-page">
+
+    <div class="container">
+
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <section class="tracker-header">
+
+            <div>
+
+                <p>
+                    Your personal money tracker
+                </p>
+
+                <h1>
+                    Financial Tracker 💰
+                </h1>
+
+                <p>
+                    Understand where your money is coming from,
+                    where it is going and what you're setting aside.
+                </p>
+
+            </div>
+
+
+            <a
+                href="/dashboard"
+                class="btn btn-outline">
+
+                ← Dashboard
+
+            </a>
+
+        </section>
+
+
+        <!-- =====================================================
+             SUMMARY
+        ====================================================== -->
+
+        <section class="tracker-summary">
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    💰
+                </div>
+
+                <div class="summary-label">
+                    Total Income
+                </div>
+
+                <div class="summary-value">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    💸
+                </div>
+
+                <div class="summary-label">
+                    Total Expenses
+                </div>
+
+                <div class="summary-value">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    📈
+                </div>
+
+                <div class="summary-label">
+                    Investments
+                </div>
+
+                <div class="summary-value">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🏦
+                </div>
+
+                <div class="summary-label">
+                    Balance
+                </div>
+
+                <div class="summary-value">
+                    ₹0
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             TRACKER GRID
+        ====================================================== -->
+
+        <section class="tracker-grid">
+
+
+            <!-- =================================================
+                 ADD TRANSACTION
+            ================================================== -->
+
+            <div class="tracker-card">
+
+                <h2>
+                    Add transaction
+                </h2>
+
+                <p class="tracker-card-description">
+
+                    Record your money activity.
+                    Your entries will be linked to your account.
+
+                </p>
+
+
+                <form
+                    method="POST"
+                    action="/tracker/add"
+                    id="transactionForm">
+
+
+                    <!-- TYPE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Transaction type
+                        </label>
+
+
+                        <div class="type-buttons">
+
+                            <button
+                                type="button"
+                                class="type-button active"
+                                data-type="income"
+                                onclick="selectType(this)">
+
+                                💰 Income
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="type-button"
+                                data-type="expense"
+                                onclick="selectType(this)">
+
+                                💸 Expense
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="type-button"
+                                data-type="investment"
+                                onclick="selectType(this)">
+
+                                📈 Investment
+
+                            </button>
+
+                        </div>
+
+
+                        <input
+                            type="hidden"
+                            name="transaction_type"
+                            id="transactionType"
+                            value="income">
+
+                    </div>
+
+
+                    <!-- AMOUNT -->
+
+                    <div class="form-group">
+
+                        <label for="amount">
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            class="tracker-input"
+                            placeholder="₹ 0"
+                            min="0"
+                            step="0.01"
+                            required>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label for="category">
+                            Category
+                        </label>
+
+                        <select
+                            id="category"
+                            name="category"
+                            class="tracker-select"
+                            required>
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option>
+                                Salary
+                            </option>
+
+                            <option>
+                                Freelance
+                            </option>
+
+                            <option>
+                                Food
+                            </option>
+
+                            <option>
+                                Transport
+                            </option>
+
+                            <option>
+                                Education
+                            </option>
+
+                            <option>
+                                Shopping
+                            </option>
+
+                            <option>
+                                Bills
+                            </option>
+
+                            <option>
+                                Rent
+                            </option>
+
+                            <option>
+                                Entertainment
+                            </option>
+
+                            <option>
+                                Health
+                            </option>
+
+                            <option>
+                                SIP / Mutual Fund
+                            </option>
+
+                            <option>
+                                Stocks
+                            </option>
+
+                            <option>
+                                Gold
+                            </option>
+
+                            <option>
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="form-group">
+
+                        <label for="transactionDate">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="transactionDate"
+                            name="transaction_date"
+                            class="tracker-input"
+                            required>
+
+                    </div>
+
+
+                    <!-- NOTE -->
+
+                    <div class="form-group">
+
+                        <label for="note">
+                            Note
+                        </label>
+
+                        <textarea
+                            id="note"
+                            name="note"
+                            class="tracker-textarea"
+                            placeholder="Example: Monthly travel expense"></textarea>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary add-button">
+
+                        + Add Transaction
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- =================================================
+                 TRANSACTIONS
+            ================================================== -->
+
+            <div>
+
+
+                <div class="tracker-card">
+
+                    <div class="transactions-header">
+
+                        <div>
+
+                            <h2>
+                                Recent transactions
+                            </h2>
+
+                            <p
+                                style="
+                                color:var(--text-light);
+                                font-size:.76rem;
+                                margin:5px 0 0;
+                                ">
+
+                                Your latest recorded activity
+
+                            </p>
+
+                        </div>
+
+
+                        <span class="transaction-count">
+                            0 entries
+                        </span>
+
+                    </div>
+
+
+                    <div class="empty-transactions">
+
+                        <div class="empty-transactions-icon">
+                            🧾
+                        </div>
+
+                        <strong>
+                            No transactions yet
+                        </strong>
+
+                        <p
+                            style="
+                            font-size:.78rem;
+                            margin-top:6px;
+                            ">
+
+                            Add your first income, expense or
+                            investment using the form.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     SAVINGS GOALS
+                ================================================== -->
+
+                <div
+                    class="tracker-card goals-section">
+
+                    <h2>
+                        Savings goals 🎯
+                    </h2>
+
+                    <p class="tracker-card-description">
+
+                        Give your savings a purpose.
+                        Create a target and track your progress.
+
+                    </p>
+
+
+                    <form
+                        class="goal-form"
+                        method="POST"
+                        action="/goals/add">
+
+
+                        <div class="form-group">
+
+                            <label for="goalName">
+                                Goal name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="goalName"
+                                name="goal_name"
+                                class="tracker-input"
+                                placeholder="Example: Emergency Fund"
+                                required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="targetAmount">
+                                Target amount
+                            </label>
+
+                            <input
+                                type="number"
+                                id="targetAmount"
+                                name="target_amount"
+                                class="tracker-input"
+                                placeholder="₹ 50,000"
+                                min="0"
+                                step="0.01"
+                                required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="targetDate">
+                                Target date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="targetDate"
+                                name="target_date"
+                                class="tracker-input">
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-outline">
+
+                            + Create Savings Goal
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 PaisaGyaan. Educational project.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+
+/* =========================================================
+   DEFAULT DATE
+========================================================= */
+
+const dateInput =
+    document.getElementById(
+        "transactionDate"
+    );
+
+
+if (dateInput) {
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+    dateInput.value = today;
+
+}
+
+
+/* =========================================================
+   TRANSACTION TYPE
+========================================================= */
+
+function selectType(button) {
+
+    const buttons =
+        document.querySelectorAll(
+            ".type-button"
+        );
+
+
+    buttons.forEach(
+        function(item) {
+
+            item.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    document.getElementById(
+        "transactionType"
+    ).value =
+        button.dataset.type;
+
+}
+
+</script>
+
+
+</body>
+</html>

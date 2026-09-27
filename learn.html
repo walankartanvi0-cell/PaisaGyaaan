@@ -1,0 +1,2343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="PaisaGyaan financial literacy hub - learn money management from basics to advanced concepts."
+    >
+
+    <title>Learn | PaisaGyaan</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+        /* =====================================================
+           LEARN PAGE SPECIFIC STYLES
+           ===================================================== */
+
+        .learn-hero {
+            padding: 70px 0 55px;
+            background:
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(242, 184, 75, 0.20),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #e8f5ed,
+                    #f8faf7 65%
+                );
+        }
+
+        .learn-hero-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.6fr;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .learn-hero h1 {
+            max-width: 800px;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        .learn-hero h1 span {
+            color: var(--primary);
+        }
+
+        .learn-hero p {
+            max-width: 680px;
+            color: var(--text-light);
+            font-size: 1.08rem;
+            margin-bottom: 25px;
+        }
+
+        .learning-level-card {
+            padding: 28px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .learning-level-card h3 {
+            margin-bottom: 17px;
+        }
+
+        .level-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .level-item:last-child {
+            border-bottom: none;
+        }
+
+        .level-dot {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: var(--primary-light);
+        }
+
+        .level-item strong {
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .level-item small {
+            color: var(--text-muted);
+        }
+
+        .topic-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        .topic-nav a {
+            padding: 9px 14px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-light);
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .topic-nav a:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .topic-section {
+            scroll-margin-top: 100px;
+            margin-bottom: 70px;
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .topic-number {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            background: var(--primary);
+            color: white;
+            border-radius: 14px;
+            font-weight: 800;
+        }
+
+        .topic-header h2 {
+            font-size: 2rem;
+            line-height: 1.15;
+            margin-bottom: 6px;
+        }
+
+        .topic-header p {
+            color: var(--text-light);
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .concept-card {
+            padding: 23px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .concept-card .concept-icon {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .concept-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .concept-card p {
+            color: var(--text-light);
+            font-size: 0.88rem;
+        }
+
+        .example-box {
+            margin-top: 18px;
+            padding: 18px;
+            background: var(--surface-soft);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .example-box strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary-dark);
+        }
+
+        .example-box p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .myth-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .myth-card {
+            padding: 24px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .myth-label {
+            display: inline-flex;
+            padding: 5px 10px;
+            margin-bottom: 12px;
+            border-radius: 50px;
+            background: var(--danger-light);
+            color: var(--danger);
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
+
+        .fact-label {
+            display: inline-flex;
+            padding: 5px 10px;
+            margin-bottom: 12px;
+            border-radius: 50px;
+            background: var(--success-light);
+            color: var(--success);
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
+
+        .quiz-box {
+            padding: 35px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #e7f4ec,
+                    #fffaf0
+                );
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .quiz-question {
+            margin: 20px 0;
+            font-size: 1.2rem;
+            font-weight: 750;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .quiz-result {
+            display: none;
+            margin-top: 20px;
+            padding: 18px;
+            background: white;
+            border-radius: 12px;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .glossary-item {
+            padding: 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .glossary-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--primary);
+        }
+
+        .glossary-item span {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 900px) {
+
+            .learn-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .concept-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .glossary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .concept-grid,
+            .myth-grid,
+            .quiz-options,
+            .glossary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .learn-hero h1 {
+                letter-spacing: -1px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="/" class="logo">
+            <span class="logo-mark">₹</span>
+            <span>Paisa<span>Gyaan</span></span>
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/learn" class="active">
+                Learn
+            </a>
+
+            <a href="/investments">
+                Investments
+            </a>
+
+            <a href="/loans">
+                Loans
+            </a>
+
+            <a href="/safety">
+                Safety
+            </a>
+
+            <a href="/scams">
+                Scams
+            </a>
+
+            <a href="/community">
+                Community
+            </a>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <a href="/login" class="btn btn-outline">
+                Login
+            </a>
+
+            <a href="/register" class="btn btn-primary">
+                Get Started
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
+<section class="learn-hero">
+
+    <div class="container">
+
+        <div class="learn-hero-grid">
+
+            <div>
+
+                <div class="hero-badge">
+                    📚 Financial Literacy Hub
+                </div>
+
+                <h1>
+                    Learn money
+                    <span>without the confusion.</span>
+                </h1>
+
+                <p>
+                    Money affects almost every part of our lives,
+                    but financial concepts are rarely taught in
+                    a simple, practical way. PaisaGyaan breaks
+                    them down from the absolute basics to advanced
+                    concepts.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#money-basics"
+                        class="btn btn-primary"
+                    >
+                        Start Learning ↓
+                    </a>
+
+                    <a
+                        href="#quiz"
+                        class="btn btn-secondary"
+                    >
+                        Test Yourself 🧠
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="learning-level-card">
+
+                <h3>
+                    Your learning path
+                </h3>
+
+                <div class="level-item">
+
+                    <div class="level-dot">
+                        🌱
+                    </div>
+
+                    <div>
+                        <strong>Beginner</strong>
+                        <small>Build the foundation</small>
+                    </div>
+
+                </div>
+
+                <div class="level-item">
+
+                    <div class="level-dot">
+                        📖
+                    </div>
+
+                    <div>
+                        <strong>Intermediate</strong>
+                        <small>Understand financial products</small>
+                    </div>
+
+                </div>
+
+                <div class="level-item">
+
+                    <div class="level-dot">
+                        📈
+                    </div>
+
+                    <div>
+                        <strong>Advanced</strong>
+                        <small>Understand risks and strategies</small>
+                    </div>
+
+                </div>
+
+                <div class="level-item">
+
+                    <div class="level-dot">
+                        🧠
+                    </div>
+
+                    <div>
+                        <strong>Apply</strong>
+                        <small>Use knowledge in real situations</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     TOPIC NAVIGATION
+     ===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                Learning map
+            </span>
+
+            <h2>
+                Pick a topic. Learn at your own pace.
+            </h2>
+
+            <p>
+                You don't have to follow everything in order.
+                Explore what you need today and return to
+                advanced topics when you're ready.
+            </p>
+
+        </div>
+
+
+        <div class="topic-nav">
+
+            <a href="#money-basics">
+                💰 Money Basics
+            </a>
+
+            <a href="#budgeting">
+                🧮 Budgeting
+            </a>
+
+            <a href="#saving">
+                🏦 Saving
+            </a>
+
+            <a href="#banking">
+                💳 Banking
+            </a>
+
+            <a href="#credit">
+                📊 Credit
+            </a>
+
+            <a href="#insurance">
+                🛡️ Insurance
+            </a>
+
+            <a href="#taxes">
+                🧾 Taxes
+            </a>
+
+            <a href="#retirement">
+                🌱 Retirement
+            </a>
+
+            <a href="#digital-money">
+                📱 Digital Money
+            </a>
+
+            <a href="#advanced">
+                🚀 Advanced
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             MONEY BASICS
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="money-basics"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    01
+                </div>
+
+                <div>
+
+                    <h2>
+                        Money Basics
+                    </h2>
+
+                    <p>
+                        Before investing or taking a loan,
+                        understand what money actually does.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="concept-grid">
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        💰
+                    </div>
+
+                    <h3>
+                        Income
+                    </h3>
+
+                    <p>
+                        Money you receive. It can come from
+                        salary, freelance work, business,
+                        interest, rent or other sources.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        💸
+                    </div>
+
+                    <h3>
+                        Expenses
+                    </h3>
+
+                    <p>
+                        Money you spend on needs, wants,
+                        bills, education, transport,
+                        entertainment and other purposes.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🪙
+                    </div>
+
+                    <h3>
+                        Savings
+                    </h3>
+
+                    <p>
+                        Money kept aside instead of being
+                        immediately spent. Savings can help
+                        handle short-term needs and emergencies.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📈
+                    </div>
+
+                    <h3>
+                        Investment
+                    </h3>
+
+                    <p>
+                        Money put into an asset with the
+                        expectation that it may generate
+                        returns or grow over time.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🔄
+                    </div>
+
+                    <h3>
+                        Cash Flow
+                    </h3>
+
+                    <p>
+                        The movement of money into and out
+                        of your finances during a period.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Financial Goal
+                    </h3>
+
+                    <p>
+                        A specific money objective with an
+                        amount and usually a time horizon.
+                    </p>
+
+                </article>
+
+            </div>
+
+
+            <div class="example-box">
+
+                <strong>
+                    💡 Simple example
+                </strong>
+
+                <p>
+                    If you receive ₹25,000 and spend ₹20,000,
+                    your cash flow leaves ₹5,000 before considering
+                    other adjustments. The next question is what
+                    you do intentionally with that ₹5,000.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BUDGETING
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="budgeting"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    02
+                </div>
+
+                <div>
+
+                    <h2>
+                        Budgeting
+                    </h2>
+
+                    <p>
+                        A budget is a plan for where your money
+                        should go before it disappears.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="concept-grid">
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📋
+                    </div>
+
+                    <h3>
+                        Track first
+                    </h3>
+
+                    <p>
+                        Record your actual income and spending
+                        before deciding where you need to make
+                        changes.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🏠
+                    </div>
+
+                    <h3>
+                        Needs
+                    </h3>
+
+                    <p>
+                        Expenses that support essential living,
+                        such as food, housing, utilities and
+                        necessary transport.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🎮
+                    </div>
+
+                    <h3>
+                        Wants
+                    </h3>
+
+                    <p>
+                        Non-essential spending that adds
+                        enjoyment or convenience.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🆘
+                    </div>
+
+                    <h3>
+                        Emergency Fund
+                    </h3>
+
+                    <p>
+                        Money reserved for unexpected expenses
+                        such as emergencies, repairs or temporary
+                        loss of income.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📆
+                    </div>
+
+                    <h3>
+                        Short vs Long Term
+                    </h3>
+
+                    <p>
+                        A phone purchase next month and retirement
+                        decades away require very different
+                        financial planning.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🔍
+                    </div>
+
+                    <h3>
+                        Review
+                    </h3>
+
+                    <p>
+                        A budget is not punishment. Review it
+                        regularly and adjust it when income,
+                        priorities or expenses change.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SAVING
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="saving"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    03
+                </div>
+
+                <div>
+
+                    <h2>
+                        Saving
+                    </h2>
+
+                    <p>
+                        Saving creates financial breathing room.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <h3>
+                        Why save?
+                    </h3>
+
+                    <ul>
+
+                        <li>
+                            Handle unexpected expenses.
+                        </li>
+
+                        <li>
+                            Prepare for planned purchases.
+                        </li>
+
+                        <li>
+                            Reduce dependence on expensive debt.
+                        </li>
+
+                        <li>
+                            Build a foundation before investing.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>
+                        Saving vs Investing
+                    </h3>
+
+                    <p>
+                        Saving and investing serve different
+                        purposes. Savings are generally intended
+                        for accessibility and relatively short-term
+                        needs, while investments are generally used
+                        for longer-term growth and involve different
+                        levels of risk.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BANKING
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="banking"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    04
+                </div>
+
+                <div>
+
+                    <h2>
+                        Banking
+                    </h2>
+
+                    <p>
+                        Understand what your bank account actually
+                        does and what different banking products mean.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="concept-grid">
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🏦
+                    </div>
+
+                    <h3>
+                        Savings Account
+                    </h3>
+
+                    <p>
+                        A deposit account designed for everyday
+                        banking and holding money while generally
+                        earning some interest.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🔒
+                    </div>
+
+                    <h3>
+                        Fixed Deposit
+                    </h3>
+
+                    <p>
+                        Money deposited for a specified period
+                        at a stated rate according to the product's
+                        terms.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🔁
+                    </div>
+
+                    <h3>
+                        Recurring Deposit
+                    </h3>
+
+                    <p>
+                        A deposit product where money is generally
+                        deposited periodically for a specified
+                        period.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        UPI
+                    </h3>
+
+                    <p>
+                        A digital payment system that enables
+                        bank-account-based transactions through
+                        participating applications.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🧾
+                    </div>
+
+                    <h3>
+                        Bank Statement
+                    </h3>
+
+                    <p>
+                        A record of account transactions that can
+                        help you monitor money coming in and going out.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🔑
+                    </div>
+
+                    <h3>
+                        Banking Credentials
+                    </h3>
+
+                    <p>
+                        Passwords, PINs, OTPs and other authentication
+                        information should never be casually shared.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CREDIT
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="credit"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    05
+                </div>
+
+                <div>
+
+                    <h2>
+                        Credit & Debt
+                    </h2>
+
+                    <p>
+                        Borrowing can be useful, but understanding
+                        the cost of borrowing is essential.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="concept-grid">
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        💳
+                    </div>
+
+                    <h3>
+                        Credit
+                    </h3>
+
+                    <p>
+                        Access to money or purchasing power now
+                        with an obligation to repay according to
+                        agreed terms.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Credit Score
+                    </h3>
+
+                    <p>
+                        A numerical representation generated from
+                        credit information according to a particular
+                        scoring model.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🧮
+                    </div>
+
+                    <h3>
+                        Interest
+                    </h3>
+
+                    <p>
+                        The cost associated with borrowing money,
+                        or the return paid on certain deposits or
+                        investments.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        ⚠️
+                    </div>
+
+                    <h3>
+                        Debt Trap
+                    </h3>
+
+                    <p>
+                        A situation where repeated borrowing and
+                        repayment obligations make it increasingly
+                        difficult to meet financial commitments.
+                    </p>
+
+                </article>
+
+            </div>
+
+
+            <div class="alert alert-warning">
+
+                <div class="alert-icon">
+                    ⚠️
+                </div>
+
+                <div>
+
+                    <strong>
+                        Understand the total cost.
+                    </strong>
+
+                    <p>
+                        Don't compare loans only by EMI. Look at
+                        interest rate, tenure, processing charges,
+                        other fees and the total amount payable.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             INSURANCE
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="insurance"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    06
+                </div>
+
+                <div>
+
+                    <h2>
+                        Insurance
+                    </h2>
+
+                    <p>
+                        Insurance is primarily about managing
+                        financial risk from uncertain events.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="concept-grid">
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🏥
+                    </div>
+
+                    <h3>
+                        Health Insurance
+                    </h3>
+
+                    <p>
+                        Provides coverage according to policy
+                        terms for specified healthcare-related
+                        expenses.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        👨‍👩‍👧
+                    </div>
+
+                    <h3>
+                        Life Insurance
+                    </h3>
+
+                    <p>
+                        Provides financial protection according
+                        to the terms of a life-insurance policy.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🚗
+                    </div>
+
+                    <h3>
+                        General Insurance
+                    </h3>
+
+                    <p>
+                        Can cover areas such as vehicles,
+                        property, travel and other specified risks.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📄
+                    </div>
+
+                    <h3>
+                        Policy Terms
+                    </h3>
+
+                    <p>
+                        Always understand exclusions, waiting
+                        periods, limits, premiums and claim
+                        conditions before purchasing insurance.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TAXES
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="taxes"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    07
+                </div>
+
+                <div>
+
+                    <h2>
+                        Taxes
+                    </h2>
+
+                    <p>
+                        Taxes are an important part of personal
+                        financial planning.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <h3>
+                        Income Tax
+                    </h3>
+
+                    <p>
+                        Income tax is imposed according to the
+                        applicable tax laws and a person's taxable
+                        income and circumstances. Tax rules,
+                        rates and deductions can change, so current
+                        official information should always be checked.
+                    </p>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>
+                        Tax Planning ≠ Tax Evasion
+                    </h3>
+
+                    <p>
+                        Legitimate tax planning involves understanding
+                        applicable provisions and organizing finances
+                        within the law. Tax evasion involves unlawful
+                        concealment or misrepresentation.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RETIREMENT
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="retirement"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    08
+                </div>
+
+                <div>
+
+                    <h2>
+                        Retirement Planning
+                    </h2>
+
+                    <p>
+                        Retirement planning is about preparing for
+                        future financial needs over a long horizon.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="concept-grid">
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        ⏳
+                    </div>
+
+                    <h3>
+                        Start Early
+                    </h3>
+
+                    <p>
+                        A longer investment horizon can allow
+                        more time for contributions and potential
+                        compounding, although returns are never guaranteed.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📈
+                    </div>
+
+                    <h3>
+                        Inflation
+                    </h3>
+
+                    <p>
+                        Inflation means the general level of prices
+                        increases over time, which can reduce the
+                        purchasing power of money.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Retirement Goal
+                    </h3>
+
+                    <p>
+                        Consider future expenses, expected lifestyle,
+                        inflation, retirement age and available
+                        resources when planning.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DIGITAL MONEY
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="digital-money"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    09
+                </div>
+
+                <div>
+
+                    <h2>
+                        Digital Money
+                    </h2>
+
+                    <p>
+                        Digital convenience should never mean
+                        ignoring security.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="concept-grid">
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        UPI Payments
+                    </h3>
+
+                    <p>
+                        Check the recipient before authorizing
+                        a payment. Understand that entering a
+                        UPI PIN generally authorizes a transaction.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🔐
+                    </div>
+
+                    <h3>
+                        OTP
+                    </h3>
+
+                    <p>
+                        Treat one-time passwords as sensitive
+                        authentication information and do not
+                        disclose them to callers or strangers.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🎣
+                    </div>
+
+                    <h3>
+                        Phishing
+                    </h3>
+
+                    <p>
+                        Fraudsters may use fake messages, websites
+                        or emails to trick people into revealing
+                        information or making payments.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📞
+                    </div>
+
+                    <h3>
+                        Fake Customer Care
+                    </h3>
+
+                    <p>
+                        Verify support numbers through official
+                        websites or applications instead of trusting
+                        numbers found in random posts or messages.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ADVANCED
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="advanced"
+        >
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    10
+                </div>
+
+                <div>
+
+                    <h2>
+                        Advanced Financial Concepts
+                    </h2>
+
+                    <p>
+                        Once the foundation is strong, these concepts
+                        help you understand more complex financial decisions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="concept-grid">
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Asset Allocation
+                    </h3>
+
+                    <p>
+                        How money is distributed among different
+                        asset classes according to goals, time horizon
+                        and risk considerations.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🧩
+                    </div>
+
+                    <h3>
+                        Diversification
+                    </h3>
+
+                    <p>
+                        Spreading exposure across investments can
+                        reduce concentration in a single asset,
+                        although it cannot eliminate investment risk.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🔄
+                    </div>
+
+                    <h3>
+                        Compounding
+                    </h3>
+
+                    <p>
+                        Returns can themselves generate returns
+                        over time. The effect depends on the rate,
+                        time and how frequently returns are compounded.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        📉
+                    </div>
+
+                    <h3>
+                        Volatility
+                    </h3>
+
+                    <p>
+                        A measure describing how much the value of
+                        an asset or market can fluctuate over time.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        ⚖️
+                    </div>
+
+                    <h3>
+                        Risk vs Return
+                    </h3>
+
+                    <p>
+                        Different investments have different risk
+                        characteristics. Higher potential return
+                        does not mean guaranteed higher return.
+                    </p>
+
+                </article>
+
+
+                <article class="concept-card">
+
+                    <div class="concept-icon">
+                        🧠
+                    </div>
+
+                    <h3>
+                        Behavioural Finance
+                    </h3>
+
+                    <p>
+                        Emotions, habits and cognitive biases can
+                        influence financial decisions.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MYTHS
+             ================================================= -->
+
+        <section class="topic-section">
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    💡
+                </div>
+
+                <div>
+
+                    <h2>
+                        Money Myths vs Reality
+                    </h2>
+
+                    <p>
+                        Financial misinformation can be expensive.
+                        Learn to question absolute claims.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="myth-grid">
+
+                <div class="myth-card">
+
+                    <span class="myth-label">
+                        MYTH
+                    </span>
+
+                    <h3>
+                        “Investing always means buying stocks.”
+                    </h3>
+
+                    <br>
+
+                    <span class="fact-label">
+                        REALITY
+                    </span>
+
+                    <p>
+                        Investments can include many different
+                        asset classes and products, each with its
+                        own characteristics and risks.
+                    </p>
+
+                </div>
+
+
+                <div class="myth-card">
+
+                    <span class="myth-label">
+                        MYTH
+                    </span>
+
+                    <h3>
+                        “A higher return is automatically better.”
+                    </h3>
+
+                    <br>
+
+                    <span class="fact-label">
+                        REALITY
+                    </span>
+
+                    <p>
+                        Return should be considered together with
+                        risk, time horizon, liquidity and your financial
+                        objective.
+                    </p>
+
+                </div>
+
+
+                <div class="myth-card">
+
+                    <span class="myth-label">
+                        MYTH
+                    </span>
+
+                    <h3>
+                        “Credit cards are free money.”
+                    </h3>
+
+                    <br>
+
+                    <span class="fact-label">
+                        REALITY
+                    </span>
+
+                    <p>
+                        A credit card provides access to credit.
+                        Unpaid balances can attract interest and other
+                        charges according to the card's terms.
+                    </p>
+
+                </div>
+
+
+                <div class="myth-card">
+
+                    <span class="myth-label">
+                        MYTH
+                    </span>
+
+                    <h3>
+                        “Guaranteed high returns are normal.”
+                    </h3>
+
+                    <br>
+
+                    <span class="fact-label">
+                        REALITY
+                    </span>
+
+                    <p>
+                        Claims of unusually high or guaranteed
+                        returns should be treated carefully and
+                        independently verified.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUIZ
+             ================================================= -->
+
+        <section
+            class="topic-section"
+            id="quiz"
+        >
+
+            <div class="quiz-box">
+
+                <span class="section-label">
+                    Quick Check
+                </span>
+
+                <h2>
+                    🧠 Test your financial knowledge
+                </h2>
+
+                <p>
+                    Choose the answer you think is correct.
+                </p>
+
+
+                <div class="quiz-question">
+
+                    Which statement about diversification
+                    is most accurate?
+
+                </div>
+
+
+                <div class="quiz-options">
+
+                    <button
+                        class="quiz-option"
+                        onclick="checkAnswer(false)"
+                    >
+                        A. It guarantees that you cannot lose money.
+                    </button>
+
+
+                    <button
+                        class="quiz-option"
+                        onclick="checkAnswer(true)"
+                    >
+                        B. It can reduce concentration in a single investment.
+                    </button>
+
+
+                    <button
+                        class="quiz-option"
+                        onclick="checkAnswer(false)"
+                    >
+                        C. It guarantees higher returns.
+                    </button>
+
+
+                    <button
+                        class="quiz-option"
+                        onclick="checkAnswer(false)"
+                    >
+                        D. It removes all investment risk.
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="quiz-result"
+                    id="quizResult"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             GLOSSARY
+             ================================================= -->
+
+        <section class="topic-section">
+
+            <div class="topic-header">
+
+                <div class="topic-number">
+                    📖
+                </div>
+
+                <div>
+
+                    <h2>
+                        Quick Finance Glossary
+                    </h2>
+
+                    <p>
+                        The words you'll see again and again
+                        while learning about money.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="glossary-grid">
+
+                <div class="glossary-item">
+                    <strong>Principal</strong>
+                    <span>Original amount of money invested or borrowed.</span>
+                </div>
+
+                <div class="glossary-item">
+                    <strong>Interest</strong>
+                    <span>Cost of borrowing or return on certain deposits.</span>
+                </div>
+
+                <div class="glossary-item">
+                    <strong>Inflation</strong>
+                    <span>General increase in prices over time.</span>
+                </div>
+
+                <div class="glossary-item">
+                    <strong>Liquidity</strong>
+                    <span>How easily an asset can be converted into cash.</span>
+                </div>
+
+                <div class="glossary-item">
+                    <strong>Risk</strong>
+                    <span>Possibility that an outcome differs from expectations.</span>
+                </div>
+
+                <div class="glossary-item">
+                    <strong>Return</strong>
+                    <span>Gain or loss generated by an investment.</span>
+                </div>
+
+                <div class="glossary-item">
+                    <strong>EMI</strong>
+                    <span>Equated periodic payment used for certain loans.</span>
+                </div>
+
+                <div class="glossary-item">
+                    <strong>Asset</strong>
+                    <span>A resource with economic value.</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DISCLAIMER
+             ================================================= -->
+
+        <div class="alert alert-success">
+
+            <div class="alert-icon">
+                ℹ️
+            </div>
+
+            <div>
+
+                <strong>
+                    Educational information
+                </strong>
+
+                <p>
+                    PaisaGyaan is designed for financial awareness
+                    and education. Financial products have different
+                    risks, costs and conditions. Always verify
+                    current product, tax and regulatory information
+                    through appropriate official sources before
+                    making financial decisions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+
+                <h2>
+                    PaisaGyaan 💰
+                </h2>
+
+                <p>
+                    Learn money. Understand money.
+                    Protect money. Make informed decisions.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Learn
+                </h4>
+
+                <a href="/learn">
+                    Financial Basics
+                </a>
+
+                <a href="/investments">
+                    Investments
+                </a>
+
+                <a href="/loans">
+                    Loans
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Protect
+                </h4>
+
+                <a href="/safety">
+                    Safety
+                </a>
+
+                <a href="/scams">
+                    Scam Awareness
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Community
+                </h4>
+
+                <a href="/community">
+                    Discussions
+                </a>
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 PaisaGyaan · Financial Awareness & Education
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+    /*
+     * Quiz
+     */
+
+    function checkAnswer(isCorrect) {
+
+        const result =
+            document.getElementById("quizResult");
+
+        result.style.display = "block";
+
+        if (isCorrect) {
+
+            result.innerHTML =
+                "✅ Correct! Diversification can reduce concentration in a single investment, but it cannot eliminate investment risk.";
+
+        } else {
+
+            result.innerHTML =
+                "❌ Not quite. Diversification can reduce concentration risk, but it does not guarantee profits or eliminate all investment risk.";
+
+        }
+
+    }
+
+
+    /*
+     * Scroll reveal
+     */
+
+    const revealElements =
+        document.querySelectorAll(".concept-card, .myth-card, .glossary-item");
+
+
+    const observer =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach((entry) => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.style.opacity = "1";
+                        entry.target.style.transform = "translateY(0)";
+
+                        observer.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.08
+            }
+        );
+
+
+    revealElements.forEach((element) => {
+
+        element.style.opacity = "0";
+        element.style.transform = "translateY(18px)";
+        element.style.transition =
+            "opacity 0.55s ease, transform 0.55s ease";
+
+        observer.observe(element);
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
